@@ -1,5 +1,6 @@
 package com.MS_Customer.dto;
 
+import com.MS_Customer.entities.UserRole;
 import com.MS_Customer.enums.SexEnum;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,4 +39,6 @@ public class CustomerDTO {
     private String password;
 
     private boolean active = true;
+
+    private UserRole role = UserRole.USER;
 }

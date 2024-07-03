@@ -4,8 +4,10 @@ import com.MS_Customer.dto.CustomerDTO;
 import com.MS_Customer.entities.Customer;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
-public class CustomersDTOMapper {
+public class CustomerDTOMapper {
 
     public CustomerDTO createCustomerDTO(Customer customer){
         var customerDTO = new CustomerDTO();
