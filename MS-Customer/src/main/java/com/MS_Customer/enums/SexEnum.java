@@ -4,6 +4,5 @@ public enum SexEnum {
     FEMININO,
     MASCULINO,
     OUTRO
-
 }
 
