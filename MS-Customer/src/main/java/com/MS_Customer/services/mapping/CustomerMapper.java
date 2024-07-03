@@ -2,7 +2,9 @@ package com.MS_Customer.services.mapping;
 
 import com.MS_Customer.dto.CustomerDTO;
 import com.MS_Customer.entities.Customer;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CustomerMapper {
     public Customer createCustomer(CustomerDTO customerDTO){
         var customer = new Customer();
