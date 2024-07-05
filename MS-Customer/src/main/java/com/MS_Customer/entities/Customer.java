@@ -54,7 +54,6 @@ public class Customer implements UserDetails {
         this.password = password;
     }
 
-    // Remove the getAuthorities method
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));

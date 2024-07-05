@@ -5,8 +5,12 @@ import com.MS_Customer.entities.Customer;
 import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.services.mapping.CustomerMapper;
 import com.MS_Customer.services.mapping.CustomerDTOMapper;
+import com.MS_Customer.infra.security.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,8 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final CustomerDTOMapper customersDTOMapper;
+    private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
 
     public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
 
@@ -37,7 +43,15 @@ public class CustomerService {
             throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
         } else {
             var customer = customerMapper.createCustomer(customerDTO);
-            return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customerRepository.save(customer)));
+            customerRepository.save(customer);
+
+            var usernamePassword = new UsernamePasswordAuthenticationToken(customerDTO.getEmail(), customerDTO.getPassword());
+            Authentication auth = authenticationManager.authenticate(usernamePassword);
+
+            var token = tokenService.generateToken((Customer) auth.getPrincipal());
+
+            var response = customersDTOMapper.createCustomerDTO(customer);
+            return ResponseEntity.ok().header("Authorization", "Bearer " + token).body(response);
         }
     }
 
