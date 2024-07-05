@@ -1,10 +1,7 @@
 package com.MS_Customer.entities;
 
 import com.MS_Customer.enums.SexEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,12 +27,14 @@ public class Customer {
 
     private SexEnum sex;
 
+    @Column(unique = true)
     @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}",
     message = "CPF must be in the format 000.000.000-00")
     private String cpf;
 
     private LocalDate birthdate;
 
+    @Column(unique = true)
     @Email
     @NotBlank
     private String email;

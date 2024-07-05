@@ -17,9 +17,14 @@ public class CustomerControllerImpl implements CustomerController {
     private final CustomerService customerService;
 
     @PutMapping("/customers/{id}")
-    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO){
         customerService.updateCustomer(id, customerDTO);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("/customers/{id}")
+    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long id) {
+        CustomerDTO customerDTO = customerService.getCustomer(id).getBody();
+        return new ResponseEntity<>(customerDTO, HttpStatus.OK);
     }
     @PostMapping("/customers")
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO customerDTO) {

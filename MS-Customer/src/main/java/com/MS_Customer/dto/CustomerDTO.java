@@ -30,7 +30,6 @@ public class CustomerDTO {
 
     private String cpf;
 
-
     private LocalDate birthdate;
 
     private String email;

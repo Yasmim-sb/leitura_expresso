@@ -5,6 +5,7 @@ import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.services.mapping.CustomerMapper;
 import com.MS_Customer.services.mapping.CustomersDTOMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,7 +16,7 @@ public class CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomersDTOMapper customersDTOMapper;
 
-    public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO) {
+    public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
         var customerExisting = customerRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Customer not found"));
 
@@ -45,5 +46,9 @@ public class CustomerService {
             var customer = customerMapper.createCustomer(customerDTO);
             return customersDTOMapper.createCustomerDTO(customerRepository.save(customer));
         }
+    }
+    public ResponseEntity<CustomerDTO> getCustomer(Long id) {
+        var customer = customerRepository.getReferenceById(id);
+        return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
     }
 }
