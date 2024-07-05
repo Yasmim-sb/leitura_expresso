@@ -37,7 +37,7 @@ public class Customer {
     private SexEnum sex;
 
     @Column(unique = true)
-    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}",
+    @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}",
     message = "CPF must be in the format 000.000.000-00")
     private String cpf;
 

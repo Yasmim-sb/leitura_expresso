@@ -37,7 +37,6 @@ public class CustomerService {
     }
 
 
-
     public CustomerDTO createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
         if (customerDTO.getFirstName().isEmpty() ||
         customerDTO.getLastName().isEmpty() ||
