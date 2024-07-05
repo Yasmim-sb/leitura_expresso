@@ -14,7 +14,9 @@ public enum ErrorCodeEnum {
 
     BAD_REQUEST("Invalid data"),
 
-    SYSTEM_ERROR("Unavailable server");
+    SYSTEM_ERROR("Unavailable server"),
+
+    NOT_ALLOWED("Not allowed");
 
     private final String message;
 }

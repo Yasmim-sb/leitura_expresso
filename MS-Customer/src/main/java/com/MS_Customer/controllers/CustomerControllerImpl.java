@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +16,16 @@ public class CustomerControllerImpl implements CustomerController {
 
     private final CustomerService customerService;
 
+    @PutMapping("/customers/{id}")
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO){
+        customerService.updateCustomer(id, customerDTO);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping("/customers/{id}")
+    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long id) {
+        CustomerDTO customerDTO = customerService.getCustomer(id).getBody();
+        return new ResponseEntity<>(customerDTO, HttpStatus.OK);
+    }
     @PostMapping("/customers")
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO customerDTO) {
         var customerDTOResponse = customerService.createCustomer(customerDTO);
