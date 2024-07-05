@@ -1,6 +1,8 @@
 package com.MS_Customer.services;
 
 import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.exceptions.customExceptions.CustomerNotFound;
+import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
 import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.services.mapping.CustomerMapper;
 import com.MS_Customer.services.mapping.CustomersDTOMapper;
@@ -18,19 +20,22 @@ public class CustomerService {
 
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
         var customerExisting = customerRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Customer not found"));
+        .orElseThrow(CustomerNotFound::new);
 
+        if (customerDTO.getPassword() != null){
+            throw new NotAllowedException();
+        }
         customerExisting.setFirstName(customerDTO.getFirstName());
         customerExisting.setLastName(customerDTO.getLastName());
         customerExisting.setCpf(customerDTO.getCpf());
         customerExisting.setBirthdate(customerDTO.getBirthdate());
         customerExisting.setEmail(customerDTO.getEmail());
-        customerExisting.setPassword(customerDTO.getPassword());
         customerExisting.setSex(customerDTO.getSex());
         customerExisting.setActive(customerDTO.isActive());
 
         return customersDTOMapper.createCustomerDTO(customerRepository.save(customerExisting));
     }
+
 
 
     public CustomerDTO createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {

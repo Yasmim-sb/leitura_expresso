@@ -1,8 +1,12 @@
 package com.MS_Customer.exceptions.build;
 
+import com.MS_Customer.exceptions.customExceptions.CustomerNotFound;
+import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Getter
 @RequiredArgsConstructor
@@ -26,4 +30,14 @@ public class Problem {
         this.message = message;
     }
 
+    public Problem(ErrorCodeEnum errorCode, NotAllowedException exception){
+        this.code = Integer.parseInt(exception.getMessageErrorCode());
+        this.status = errorCode.name();
+        this.message = errorCode.getMessage();
+    }
+    public Problem(ErrorCodeEnum errorCode, CustomerNotFound exception){
+        this.code = Integer.parseInt(exception.getMessageErrorCode());
+        this.status = errorCode.name();
+        this.message = errorCode.getMessage();
+    }
 }
