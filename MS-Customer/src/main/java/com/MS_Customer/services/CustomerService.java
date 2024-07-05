@@ -14,6 +14,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final CustomersDTOMapper customersDTOMapper;
+
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO) {
         var customerExisting = customerRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Customer not found"));
@@ -29,5 +30,20 @@ public class CustomerService {
 
         return customersDTOMapper.createCustomerDTO(customerRepository.save(customerExisting));
     }
-}
 
+
+    public CustomerDTO createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
+        if (customerDTO.getFirstName().isEmpty() ||
+        customerDTO.getLastName().isEmpty() ||
+        customerDTO.getSex() == null ||
+        customerDTO.getCpf().isEmpty() ||
+        customerDTO.getBirthdate() == null ||
+        customerDTO.getEmail().isEmpty() ||
+        customerDTO.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
+        } else {
+            var customer = customerMapper.createCustomer(customerDTO);
+            return customersDTOMapper.createCustomerDTO(customerRepository.save(customer));
+        }
+    }
+}

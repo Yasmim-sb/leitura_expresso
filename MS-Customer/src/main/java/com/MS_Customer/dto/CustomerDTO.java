@@ -37,5 +37,5 @@ public class CustomerDTO {
 
     private String password;
 
-    private boolean active;
+    private boolean active = true;
 }
