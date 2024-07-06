@@ -2,12 +2,14 @@ package com.MS_Customer.dto;
 
 import com.MS_Customer.entities.Address;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class AddressDTO {
 
     private Long id;
