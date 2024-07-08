@@ -1,10 +1,7 @@
 package com.MS_Customer.entities;
 
 import com.MS_Customer.enums.SexEnum;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -15,6 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -47,6 +45,9 @@ public class Customer {
     @Size(min = 6)
     @NotBlank
     private String password;
+
+    @OneToMany
+    private List<Address> addresses;
 
     private boolean active = true;
 }
