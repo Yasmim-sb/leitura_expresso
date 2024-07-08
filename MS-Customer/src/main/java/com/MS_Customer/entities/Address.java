@@ -2,10 +2,7 @@ package com.MS_Customer.entities;
 
 import com.MS_Customer.client.models.AddressByCep;
 import com.MS_Customer.request.AddressRequest;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -46,7 +43,9 @@ public class Address {
 
     private String complement;
 
-    private Long customerId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id", nullable = false)
+    private Customer customerId;
 
     public Address(AddressByCep byCep, AddressRequest request){
         this.state = byCep.getUf().getNome();
@@ -56,6 +55,5 @@ public class Address {
         this.number = request.getNumber();
         this.cep = request.getCep();
         this.complement = request.getComplement();
-        this.customerId = request.getCustomerId();
     }
 }

@@ -52,4 +52,8 @@ public class Customer {
     private List<Address> addresses;
 
     private boolean active = true;
+
+   @OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addressList;
+
 }
