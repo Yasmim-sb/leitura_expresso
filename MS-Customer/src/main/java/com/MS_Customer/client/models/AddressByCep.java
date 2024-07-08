@@ -1,15 +1,13 @@
 package com.MS_Customer.client.models;
 
 import com.MS_Customer.enums.StateUFEnum;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Builder
 public class AddressByCep {
     private String logradouro;
 

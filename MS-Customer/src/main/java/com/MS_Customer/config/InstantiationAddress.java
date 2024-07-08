@@ -62,9 +62,10 @@ public class InstantiationAddress implements CommandLineRunner {
         .customerId(customer1)
         .build();
 
-        Address address2 = builder()
+
+        Address address2 = Address.builder()
         .state("SP")
-        .city("Praça da Sé")
+        .city("São Paulo")
         .district("Sé")
         .street("Praça da Sé")
         .number("7854")

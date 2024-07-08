@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -48,6 +47,9 @@ public class Customer {
     @Size(min = 6)
     @NotBlank
     private String password;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Address> addresses;
 
     private boolean active = true;
 
