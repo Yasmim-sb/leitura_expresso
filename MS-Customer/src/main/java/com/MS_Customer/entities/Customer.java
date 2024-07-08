@@ -48,7 +48,7 @@ public class Customer {
     @NotBlank
     private String password;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
 
     private boolean active = true;
