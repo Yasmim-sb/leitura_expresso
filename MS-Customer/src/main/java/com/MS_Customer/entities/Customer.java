@@ -53,4 +53,5 @@ public class Customer {
     private String password;
 
     private boolean active = true;
+
 }
