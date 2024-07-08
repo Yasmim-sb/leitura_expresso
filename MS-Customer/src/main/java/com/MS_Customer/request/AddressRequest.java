@@ -11,7 +11,7 @@ public class AddressRequest {
     @NotBlank(message = "Street cannot be blank")
     private String street;
 
-    @NotBlank(message = "Number  cannot be blank")
+    @NotBlank(message = "Number cannot be blank")
     private String number;
 
     @NotBlank(message = "CEP cannot be blank")

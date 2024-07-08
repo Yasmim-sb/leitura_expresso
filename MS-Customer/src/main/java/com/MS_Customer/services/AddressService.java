@@ -23,7 +23,6 @@ public class AddressService {
     private final CustomerRepository customerRepository;
 
     public AddressDTO create(AddressRequest request){
-
         checkIdCustomerIsValid(request.getCustomerId());
 
         return new AddressDTO(salveAddress(request.getCep(), request));
@@ -34,7 +33,7 @@ public class AddressService {
     }
 
     private void checkIdCustomerIsValid(Long customerId){
-        if(customerRepository.findById(customerId).isEmpty())
+        if(!customerRepository.existsById(customerId))
             throw new CustomerNotFoundException();
     }
 

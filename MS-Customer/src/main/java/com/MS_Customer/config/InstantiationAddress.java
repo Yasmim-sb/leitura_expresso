@@ -52,7 +52,7 @@ public class InstantiationAddress implements CommandLineRunner {
         customerRepository.saveAll(Arrays.asList(customer1, customer2));
 
         Address address1 = Address.builder()
-        .id(3L)
+        .id(1L)
         .state("BA")
         .city("Feira de Santana")
         .district("Tomba")
@@ -64,7 +64,7 @@ public class InstantiationAddress implements CommandLineRunner {
         .build();
 
         Address address2 = Address.builder()
-        .id(4L)
+        .id(2L)
         .state("SP")
         .city("São Paulo")
         .district("Sé")
