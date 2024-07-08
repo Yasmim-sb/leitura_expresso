@@ -2,11 +2,6 @@ package com.MS_Customer.entities;
 
 import com.MS_Customer.enums.SexEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -17,6 +12,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -53,5 +50,8 @@ public class Customer {
     private String password;
 
     private boolean active = true;
+
+   @OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addressList;
 
 }

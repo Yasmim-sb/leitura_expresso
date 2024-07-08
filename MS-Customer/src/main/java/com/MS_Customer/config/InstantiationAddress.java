@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+import static com.MS_Customer.entities.Address.*;
+
 @Configuration
 @RequiredArgsConstructor
 public class InstantiationAddress implements CommandLineRunner {
@@ -25,7 +27,6 @@ public class InstantiationAddress implements CommandLineRunner {
         customerRepository.deleteAll();
 
         Customer customer1 = Customer.builder()
-        .id(33L)
         .firstName("Raimundo")
         .lastName("Silva")
         .sex(SexEnum.MASCULINO)
@@ -38,7 +39,6 @@ public class InstantiationAddress implements CommandLineRunner {
 
 
         Customer customer2 = Customer.builder()
-        .id(34L)
         .firstName("Rita")
         .lastName("Gonçalves")
         .sex(SexEnum.FEMININO)
@@ -51,8 +51,7 @@ public class InstantiationAddress implements CommandLineRunner {
 
         customerRepository.saveAll(Arrays.asList(customer1, customer2));
 
-        Address address1 = Address.builder()
-        .id(3L)
+        Address address1 = builder()
         .state("BA")
         .city("Feira de Santana")
         .district("Tomba")
@@ -60,11 +59,10 @@ public class InstantiationAddress implements CommandLineRunner {
         .number("01")
         .cep("44090488")
         .complement("")
-        .customerId(33L)
+        .customerId(customer1)
         .build();
 
-        Address address2 = Address.builder()
-        .id(4L)
+        Address address2 = builder()
         .state("SP")
         .city("Praça da Sé")
         .district("Sé")
@@ -72,7 +70,7 @@ public class InstantiationAddress implements CommandLineRunner {
         .number("7854")
         .cep("01001-000")
         .complement("")
-        .customerId(34L)
+        .customerId(customer2)
         .build();
 
         addressRepository.saveAll(Arrays.asList(address1, address2));
