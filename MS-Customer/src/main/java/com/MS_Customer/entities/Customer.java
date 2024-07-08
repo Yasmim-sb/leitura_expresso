@@ -30,6 +30,7 @@ public class Customer {
     @Size(min = 3)
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     private SexEnum sex;
 
     @Column(unique = true)
