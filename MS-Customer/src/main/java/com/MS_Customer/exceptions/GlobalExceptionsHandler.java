@@ -5,6 +5,7 @@ import com.MS_Customer.exceptions.customExceptions.AddressNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.FeignCepNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.StandardCustomException;
+import feign.FeignException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,4 +47,11 @@ public class GlobalExceptionsHandler {
         var problem = new Problem(ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
     }
+
+    @ExceptionHandler(FeignException.class)
+    public final ResponseEntity<Object> handlerFeignException(FeignException e){
+        var problem = new Problem(e);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(problem);
+    }
+
 }

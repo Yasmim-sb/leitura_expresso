@@ -1,5 +1,6 @@
 package com.MS_Customer.exceptions.build;
 
+import feign.FeignException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.util.Arrays;
@@ -43,6 +44,11 @@ public class Problem {
         this.code = HttpStatus.BAD_REQUEST.value();
         this.status = HttpStatus.BAD_REQUEST.name();
         this.message = Arrays.toString(argumentNotValidException.getDetailMessageArguments());
+    }
+    public Problem(FeignException feignException){
+        this.code = HttpStatus.BAD_REQUEST.value();
+        this.status = HttpStatus.BAD_REQUEST.name();
+        this.message = feignException.getCause().toString();
     }
 
     private String formatViolationMessages(Set<ConstraintViolation<?>> violations) {
