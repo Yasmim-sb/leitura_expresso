@@ -1,6 +1,7 @@
 package com.MS_Customer.entities;
 
 import com.MS_Customer.enums.SexEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -49,12 +50,9 @@ public class Customer {
     @NotBlank
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Address> addresses;
-
     private boolean active = true;
 
-   @OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Address> addressList;
 
 }

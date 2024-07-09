@@ -16,6 +16,7 @@ public class AddressConstants {
     .street("Street Test 01")
     .number("12")
     .cep("01001-000")
+    .district("Center")
     .complement("Complement test 01")
     .customerId(1L)
     .build();
@@ -24,6 +25,7 @@ public class AddressConstants {
     .street("Street Test 01")
     .number("12")
     .cep("01001-000")
+    .district("Center")
     .complement("Complement test 01")
     .customerId(999L)
     .build();
@@ -32,6 +34,7 @@ public class AddressConstants {
     .street("Street Test 01")
     .number("12")
     .cep("01001-000000000000")
+    .district("Center")
     .complement("Complement test 01")
     .customerId(1L)
     .build();
@@ -40,6 +43,7 @@ public class AddressConstants {
     .street("Street Test 01")
     .number("12")
     .cep("01000-000")
+    .district("Center")
     .complement("Complement test 01")
     .customerId(1L)
     .build();
@@ -48,6 +52,7 @@ public class AddressConstants {
     .street(" ")
     .number(" ")
     .cep(" ")
+    .district(" ")
     .complement(" ")
     .customerId(null)
     .build();
@@ -62,6 +67,7 @@ public class AddressConstants {
     .email("pedro@email.com")
     .password("1234567")
     .active(true)
+    .addressList(null)
     .build();
 
     public static AddressByCep ADDRESS_BY_CEP01 = AddressByCep.builder()
@@ -87,31 +93,31 @@ public class AddressConstants {
     public static Address ADDRESS01_TO_CREATE = Address.builder()
     .state(ADDRESS_BY_CEP01.getUf().getNome())
     .city(ADDRESS_BY_CEP01.getLocalidade())
-    .district(ADDRESS_BY_CEP01.getBairro())
+    .district(ADDRESS01_REQUEST_CORRECT_FIELDS.getDistrict())
     .street(ADDRESS01_REQUEST_CORRECT_FIELDS.getStreet())
     .number(ADDRESS01_REQUEST_CORRECT_FIELDS.getNumber())
     .cep(ADDRESS01_REQUEST_CORRECT_FIELDS.getCep())
     .complement(ADDRESS01_REQUEST_CORRECT_FIELDS.getComplement())
-    .customerId(ADDRESS01_REQUEST_CORRECT_FIELDS.getCustomerId())
+    .customerId(CUSTOMER01_IN_DB)
     .build();
 
     public static Address ADDRESS01 = Address.builder()
     .id(1L)
     .state(ADDRESS_BY_CEP01.getUf().getNome())
     .city(ADDRESS_BY_CEP01.getLocalidade())
-    .district(ADDRESS_BY_CEP01.getBairro())
+    .district(ADDRESS01_REQUEST_CORRECT_FIELDS.getDistrict())
     .street(ADDRESS01_REQUEST_CORRECT_FIELDS.getStreet())
     .number(ADDRESS01_REQUEST_CORRECT_FIELDS.getNumber())
     .cep(ADDRESS01_REQUEST_CORRECT_FIELDS.getCep())
     .complement(ADDRESS01_REQUEST_CORRECT_FIELDS.getComplement())
-    .customerId(ADDRESS01_REQUEST_CORRECT_FIELDS.getCustomerId())
+    .customerId(CUSTOMER01_IN_DB)
     .build();
 
     public static AddressDTO ADDRESS01_DTO = AddressDTO.builder()
     .id(1L)
     .state(ADDRESS_BY_CEP01.getUf().getNome())
     .city(ADDRESS_BY_CEP01.getLocalidade())
-    .district(ADDRESS_BY_CEP01.getBairro())
+    .district(ADDRESS01_REQUEST_CORRECT_FIELDS.getDistrict())
     .street(ADDRESS01_REQUEST_CORRECT_FIELDS.getStreet())
     .number(ADDRESS01_REQUEST_CORRECT_FIELDS.getNumber())
     .cep(ADDRESS01_REQUEST_CORRECT_FIELDS.getCep())

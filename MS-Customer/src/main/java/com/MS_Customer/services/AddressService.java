@@ -4,6 +4,7 @@ import com.MS_Customer.client.ViaCepFeign;
 import com.MS_Customer.client.models.AddressByCep;
 import com.MS_Customer.dto.AddressDTO;
 import com.MS_Customer.entities.Address;
+import com.MS_Customer.entities.Customer;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.FeignCepNotFoundException;
 import com.MS_Customer.repositories.AddressRepository;
@@ -23,18 +24,15 @@ public class AddressService {
     private final CustomerRepository customerRepository;
 
     public AddressDTO create(AddressRequest request){
-        checkIdCustomerIsValid(request.getCustomerId());
-
-        return new AddressDTO(salveAddress(request.getCep(), request));
+        return new AddressDTO(salveAddress(request.getCep(), request, getCustomByCustomerId(request.getCustomerId())));
     }
 
-    private Address salveAddress(String byCep, AddressRequest request){
-       return addressRepository.save(new Address(searchByCep(byCep), request));
+    private Address salveAddress(String byCep, AddressRequest request, Customer customer){
+       return addressRepository.save(new Address(searchByCep(byCep), request, customer));
     }
 
-    private void checkIdCustomerIsValid(Long customerId){
-        if(!customerRepository.existsById(customerId))
-            throw new CustomerNotFoundException();
+    private Customer getCustomByCustomerId(Long customerId){
+        return customerRepository.findById(customerId).orElseThrow(CustomerNotFoundException::new);
     }
 
     private AddressByCep searchByCep(String cep){

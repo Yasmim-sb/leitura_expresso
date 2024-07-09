@@ -39,5 +39,6 @@ public class AddressDTO {
         this.number = address.getNumber();
         this.cep = address.getCep();
         this.complement = address.getComplement();
+        this.customerId = address.getCustomerId().getId();
     }
 }

@@ -5,10 +5,7 @@ import com.MS_Customer.request.AddressRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
@@ -45,15 +42,17 @@ public class Address {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
+    @ToString.Exclude
     private Customer customerId;
 
-    public Address(AddressByCep byCep, AddressRequest request){
+    public Address(AddressByCep byCep, AddressRequest request, Customer customer){
         this.state = byCep.getUf().getNome();
         this.city = byCep.getLocalidade();
-        this.district = byCep.getBairro();
+        this.district = request.getDistrict();
         this.street = request.getStreet();
         this.number = request.getNumber();
         this.cep = request.getCep();
         this.complement = request.getComplement();
+        this.customerId = customer;
     }
 }

@@ -17,6 +17,9 @@ public class AddressRequest {
     @NotBlank(message = "CEP cannot be blank")
     private String cep;
 
+    @NotBlank(message = "District cannot be blank")
+    private String district;
+
     private String complement;
 
     @NotNull(message = "Custom ID cannot be null")
