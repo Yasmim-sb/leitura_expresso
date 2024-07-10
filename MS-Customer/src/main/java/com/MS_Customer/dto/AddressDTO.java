@@ -2,6 +2,7 @@ package com.MS_Customer.dto;
 
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
@@ -28,9 +29,10 @@ public class AddressDTO {
 
     private String complement;
 
+    @JsonIgnore
     private Customer customerId;
 
-    public AddressDTO(Address address, Customer customer) {
+    public AddressDTO(Address address) {
         this.id = address.getId();
         this.state = address.getState();
         this.city = address.getCity();
@@ -39,7 +41,6 @@ public class AddressDTO {
         this.number = address.getNumber();
         this.cep = address.getCep();
         this.complement = address.getComplement();
-        this.customerId = customer;
     }
 
 

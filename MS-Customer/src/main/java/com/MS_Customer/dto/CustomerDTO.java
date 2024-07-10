@@ -2,6 +2,7 @@ package com.MS_Customer.dto;
 
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.enums.SexEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

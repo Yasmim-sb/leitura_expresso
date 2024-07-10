@@ -29,7 +29,7 @@ public class AddressService {
         Customer customer = getCustomerByCustomerId(request.getCustomerId());
         Address address = saveAddress(request, customer);
 
-        return new AddressDTO(address, customer);
+        return new AddressDTO(address);
     }
 
     private Address saveAddress(AddressRequest request, Customer customer) {
@@ -70,7 +70,7 @@ public class AddressService {
 
     public CustomerDTO convertToCustomerDTO(Customer customer) {
         List<AddressDTO> addressDTOList = customer.getAddressList().stream()
-        .map(address -> new AddressDTO(address, customer))
+        .map(AddressDTO::new)
         .collect(Collectors.toList());
 
         return new CustomerDTO(

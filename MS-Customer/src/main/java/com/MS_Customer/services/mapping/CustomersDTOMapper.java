@@ -1,8 +1,11 @@
 package com.MS_Customer.services.mapping;
 
+import com.MS_Customer.dto.AddressDTO;
 import com.MS_Customer.dto.CustomerDTO;
 import com.MS_Customer.entities.Customer;
 import org.springframework.stereotype.Component;
+
+import java.util.stream.Collectors;
 
 @Component
 public class CustomersDTOMapper {
@@ -19,7 +22,22 @@ public class CustomersDTOMapper {
         customerDTO.setSex(customer.getSex());
         customerDTO.setBirthdate(customer.getBirthdate());
 
+        if (customer.getAddressList() != null) {
+            customerDTO.setAddressList(customer.getAddressList().stream()
+            .map(address -> new AddressDTO(
+            address.getId(),
+            address.getState(),
+            address.getCity(),
+            address.getDistrict(),
+            address.getStreet(),
+            address.getNumber(),
+            address.getCep(),
+            address.getComplement(),
+            customer
+            ))
+            .collect(Collectors.toList()));
+        }
+
         return customerDTO;
     }
-
 }
