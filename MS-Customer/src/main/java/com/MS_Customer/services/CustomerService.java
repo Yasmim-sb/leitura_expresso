@@ -1,6 +1,7 @@
 package com.MS_Customer.services;
 
 import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.entities.Customer;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFound;
 import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
 import com.MS_Customer.repositories.CustomerRepository;
@@ -17,6 +18,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final CustomersDTOMapper customersDTOMapper;
+    private final AddressService addressService;
 
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
         var customerExisting = customerRepository.findById(id)
@@ -51,8 +53,14 @@ public class CustomerService {
             return customersDTOMapper.createCustomerDTO(customerRepository.save(customer));
         }
     }
-    public ResponseEntity<CustomerDTO> getCustomer(Long id) {
-        var customer = customerRepository.getReferenceById(id);
-        return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
+//    public ResponseEntity<CustomerDTO> getCustomer(Long id) {
+//        var customer = customerRepository.getReferenceById(id);
+//        return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
+//    }
+    public CustomerDTO getCustomerById(Long customerId) {
+        Customer customer = customerRepository.findById(customerId)
+        .orElseThrow(CustomerNotFound::new);
+
+        return addressService.convertToCustomerDTO(customer);
     }
 }

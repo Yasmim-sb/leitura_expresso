@@ -122,7 +122,7 @@ public class AddressConstants {
     .number(ADDRESS01_REQUEST_CORRECT_FIELDS.getNumber())
     .cep(ADDRESS01_REQUEST_CORRECT_FIELDS.getCep())
     .complement(ADDRESS01_REQUEST_CORRECT_FIELDS.getComplement())
-    .customerId(ADDRESS01_REQUEST_CORRECT_FIELDS.getCustomerId())
+    .customerId(CUSTOMER01_IN_DB)
     .build();
 
 
