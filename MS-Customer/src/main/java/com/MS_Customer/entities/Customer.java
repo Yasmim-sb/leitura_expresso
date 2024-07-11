@@ -1,5 +1,6 @@
 package com.MS_Customer.entities;
 
+import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.enums.SexEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -38,7 +39,7 @@ public class Customer implements UserDetails {
 
     private LocalDate birthdate;
 
-    //@Column(unique = true) - Está comentado pois durante os testes eu não quero ficar trocando informações
+    //@Column(unique = true) -  Está comentado pois durante ostestes eu não quero ficar trocando informações
     @Email
     @NotBlank
     private String email;
@@ -49,14 +50,18 @@ public class Customer implements UserDetails {
 
     private boolean active = true;
 
-    public Customer(String email, String password){
+    private CustomerRole role;
+
+    public Customer(String email, String password, CustomerRole role){
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == CustomerRole.REGISTERED_CUSTOMER) return List.of(new SimpleGrantedAuthority("ROLE_REGISTERED_CUSTOMER"), new SimpleGrantedAuthority("ROLE_UNREGISTERED_CUSTOMER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_UNREGISTERED_CUSTOMER"));
     }
 
     @Override

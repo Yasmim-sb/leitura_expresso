@@ -2,9 +2,11 @@ package com.MS_Customer.controllers;
 
 import com.MS_Customer.dto.CustomerAuthenticationDTO;
 import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.dto.LoginResponseDTO;
+import com.MS_Customer.entities.Customer;
 import com.MS_Customer.interfaces.CustomerController;
-import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.services.CustomerService;
+import com.MS_Customer.infra.security.TokenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +22,7 @@ public class CustomerControllerImpl implements CustomerController {
 
     private final CustomerService customerService;
     private final AuthenticationManager authenticationManager;
-    private final CustomerRepository customerRepository;
+    private final TokenService tokenService;
 
     @PostMapping("/customers")
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO customerDTO) {
@@ -29,11 +31,11 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid CustomerAuthenticationDTO data){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid CustomerAuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-
-        return ResponseEntity.ok().body(auth);
+        var token = tokenService.generateToken((Customer) auth.getPrincipal());
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @GetMapping("/{id}")

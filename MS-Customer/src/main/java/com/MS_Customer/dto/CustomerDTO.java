@@ -1,5 +1,6 @@
 package com.MS_Customer.dto;
 
+import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.enums.SexEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,6 @@ public class CustomerDTO {
 
     private String cpf;
 
-
     private LocalDate birthdate;
 
     private String email;
@@ -30,5 +30,7 @@ public class CustomerDTO {
     private String password;
 
     private boolean active = true;
+
+    private CustomerRole role;
 
 }

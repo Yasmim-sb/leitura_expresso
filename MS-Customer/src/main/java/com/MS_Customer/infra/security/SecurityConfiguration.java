@@ -29,6 +29,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/v1/customers").permitAll()
                         .requestMatchers(HttpMethod.POST, "/v1/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/customers/*").hasRole("REGISTERED_CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, "/v1/customers/*").hasRole("REGISTERED_CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, "/v1/customers/*/password").hasRole("REGISTERED_CUSTOMER")
+                        .requestMatchers(HttpMethod.POST, "/v1/address").hasRole("REGISTERED_CUSTOMER")
+                        .requestMatchers(HttpMethod.PUT, "/v1/address/*").hasRole("REGISTERED_CUSTOMER")
+                        .requestMatchers(HttpMethod.DELETE, "/v1/address/*").hasRole("REGISTERED_CUSTOMER")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
