@@ -39,7 +39,7 @@ public class Customer implements UserDetails {
 
     private LocalDate birthdate;
 
-    //@Column(unique = true) -  Está comentado pois durante ostestes eu não quero ficar trocando informações
+    //@Column(unique = true) -  Está comentado pois durante os testes eu não quero ficar trocando informações
     @Email
     @NotBlank
     private String email;
@@ -50,7 +50,8 @@ public class Customer implements UserDetails {
 
     private boolean active = true;
 
-    private CustomerRole role;
+    @Enumerated(EnumType.STRING)
+    private CustomerRole role = CustomerRole.UNREGISTERED_CUSTOMER;
 
     public Customer(String email, String password, CustomerRole role){
         this.email = email;
@@ -60,8 +61,10 @@ public class Customer implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == CustomerRole.REGISTERED_CUSTOMER) return List.of(new SimpleGrantedAuthority("ROLE_REGISTERED_CUSTOMER"), new SimpleGrantedAuthority("ROLE_UNREGISTERED_CUSTOMER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_UNREGISTERED_CUSTOMER"));
+        if (this.role == CustomerRole.REGISTERED_CUSTOMER)
+            return List.of(new SimpleGrantedAuthority("ROLE_REGISTERED_CUSTOMER"), new SimpleGrantedAuthority("ROLE_UNREGISTERED_CUSTOMER"));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_UNREGISTERED_CUSTOMER"));
     }
 
     @Override

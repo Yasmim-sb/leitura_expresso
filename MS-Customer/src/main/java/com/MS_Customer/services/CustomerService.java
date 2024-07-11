@@ -2,6 +2,7 @@ package com.MS_Customer.services;
 
 import com.MS_Customer.dto.CustomerDTO;
 import com.MS_Customer.entities.Customer;
+import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.services.mapping.CustomerMapper;
 import com.MS_Customer.services.mapping.CustomerDTOMapper;
@@ -43,6 +44,7 @@ public class CustomerService {
             throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
         } else {
             var customer = customerMapper.createCustomer(customerDTO);
+            customer.setRole(CustomerRole.UNREGISTERED_CUSTOMER);
             customerRepository.save(customer);
 
             var usernamePassword = new UsernamePasswordAuthenticationToken(customerDTO.getEmail(), customerDTO.getPassword());
