@@ -1,12 +1,7 @@
 package com.MS_Customer.exceptions;
 
 import com.MS_Customer.exceptions.build.Problem;
-import com.MS_Customer.exceptions.customExceptions.AddressNotFoundException;
-import com.MS_Customer.exceptions.customExceptions.CustomerNotFound;
-import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
-import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
-import com.MS_Customer.exceptions.customExceptions.FeignCepNotFoundException;
-import com.MS_Customer.exceptions.customExceptions.StandardCustomException;
+import com.MS_Customer.exceptions.customExceptions.*;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -40,6 +35,12 @@ public class GlobalExceptionsHandler {
 
     @ExceptionHandler(CustomerNotFound.class)
     public ResponseEntity<Object> handleCustomerNotFoundException(CustomerNotFound ex) {
+        Problem problem = new Problem(ex.getMessageErrorCode(), ex.getHttpStatus());
+        return ResponseEntity.status(ex.getHttpStatus()).body(problem);
+    }
+
+    @ExceptionHandler(NotPossibleToAlterAddressException.class)
+    public ResponseEntity<Object> handleNotPossibleAlterAddressException(NotPossibleToAlterAddressException ex) {
         Problem problem = new Problem(ex.getMessageErrorCode(), ex.getHttpStatus());
         return ResponseEntity.status(ex.getHttpStatus()).body(problem);
     }

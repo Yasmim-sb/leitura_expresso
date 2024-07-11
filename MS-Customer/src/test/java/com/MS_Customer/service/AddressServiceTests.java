@@ -91,5 +91,8 @@ class AddressServiceTests {
         verify(viaCepFeign, times(1)).searchLocationByCep(any());
         verify(addressRepository, never()).save(any());
     }
-
+    @DisplayName("create: LengthCEPIncorrect > MethodArgumentNotValidException")
+    void create_withLengthCEPIncorrect_ThrowMethodArgumentNotValidException(){
+        /* TODO test */
+    }
 }

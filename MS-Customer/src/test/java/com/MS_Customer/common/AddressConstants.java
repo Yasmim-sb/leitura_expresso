@@ -125,5 +125,4 @@ public class AddressConstants {
     .customerId(ADDRESS01_REQUEST_CORRECT_FIELDS.getCustomerId())
     .build();
 
-
 }

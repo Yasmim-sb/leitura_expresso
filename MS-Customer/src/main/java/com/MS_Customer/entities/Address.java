@@ -55,4 +55,16 @@ public class Address {
         this.complement = request.getComplement();
         this.customerId = customer;
     }
+
+    public Address(AddressByCep byCep, AddressRequest request, Customer customer, Address addressInDb){
+        this.id = addressInDb.getId();
+        this.state = byCep.getUf().getNome();
+        this.city = byCep.getLocalidade();
+        this.district = request.getDistrict();
+        this.street = request.getStreet();
+        this.number = request.getNumber();
+        this.cep = request.getCep();
+        this.complement = request.getComplement();
+        this.customerId = customer;
+    }
 }
