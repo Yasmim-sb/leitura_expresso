@@ -24,7 +24,7 @@ public class AddressControllerImpl implements AddressController {
     public ResponseEntity<AddressDTO> createAddress(@RequestBody @Valid AddressRequest request) {
         AddressDTO addressDTO = addressService.create(request);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("{id}")
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
         .buildAndExpand(addressDTO.getId()).toUri();
 
         return ResponseEntity.created(uri).body(addressDTO);
@@ -36,6 +36,13 @@ public class AddressControllerImpl implements AddressController {
         AddressDTO addressDTO = addressService.update(id, request);
 
         return ResponseEntity.ok().body(addressDTO);
+    }
+
+    @Override
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
+        addressService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

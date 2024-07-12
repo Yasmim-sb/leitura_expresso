@@ -1,6 +1,7 @@
 package com.MS_Customer.web;
 
 import com.MS_Customer.controllers.AddressControllerImpl;
+import com.MS_Customer.exceptions.customExceptions.AddressNotFoundException;
 import com.MS_Customer.request.AddressRequest;
 import com.MS_Customer.services.AddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +18,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import static com.MS_Customer.common.AddressConstants.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -42,8 +44,7 @@ class AddressControllerImplTests {
 //        mockMvc.perform(post("/v1/address")
 //        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_CORRECT_FIELDS))
 //        .contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isCreated())
-//        .andExpect(jsonPath("$.id").value(ADDRESS01_DTO.getId()));
+//        .andExpect(status().isCreated());
 //
 //    }
 //
@@ -57,4 +58,23 @@ class AddressControllerImplTests {
 //        .contentType(MediaType.APPLICATION_JSON))
 //        .andExpect(status().isBadRequest());
 //    }
+
+    @Test
+    @DisplayName("delete: AddressIdValid > ReturnsVoid : Status_204")
+    void delete_withAddressIdValid_ReturnsVoid_Status_204() throws Exception {
+        doNothing().when(addressService).delete(ADDRESS01_DTO.getId());
+
+        mockMvc.perform(delete("/v1/address/{id}", ADDRESS01_DTO.getId()))
+        .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("delete: AddressIdValidInvalid > AddressNotFoundException : Status_404")
+    void delete_withAddressIdValidInvalid_ThrowAddressNotFoundException_Status_404() throws Exception {
+        doThrow(AddressNotFoundException.class).when(addressService).delete(99L);
+
+        mockMvc.perform(delete("/v1/address/{id}", 99L))
+        .andExpect(status().isNotFound());
+    }
+
 }

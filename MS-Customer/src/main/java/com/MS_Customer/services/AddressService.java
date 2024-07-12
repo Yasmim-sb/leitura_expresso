@@ -33,6 +33,10 @@ public class AddressService {
         return buildingAddressDTO(id, request);
     }
 
+    public void delete(Long id){
+        addressRepository.delete(getAddress(id));
+    }
+
     private AddressDTO buildingAddressDTO(Long id, AddressRequest request) {
         Address address = getAddress(id);
         Customer customer = getCustomByCustomerId(request.getCustomerId());
@@ -66,7 +70,7 @@ public class AddressService {
     private AddressByCep searchByCep(String cep) {
         AddressByCep byCep = viaCepFeign.searchLocationByCep(cep);
 
-        checkCep(byCep.erro.equalsIgnoreCase("true"));
+        checkCep(byCep.getErro().equalsIgnoreCase("true"));
 
         return byCep;
     }

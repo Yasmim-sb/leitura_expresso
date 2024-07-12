@@ -69,18 +69,6 @@ class AddressServiceTests {
         verify(addressRepository, never()).save(any());
     }
 
-//    @Test
-//    @DisplayName("create: InValidLengthCEP > FeignException")
-//    void create_withInValidLengthCEP_ThrowFeignException(){
-//        when(customerRepository.findById(CUSTOMER01_IN_DB.getId())).thenReturn(Optional.of(CUSTOMER01_IN_DB));
-//        when(viaCepFeign.searchLocationByCep(ADDRESS01_REQUEST_INCORRECT_LENGTH_CEP.getCep())).thenThrow(FeignException.class);
-//
-//        assertThrows(FeignException.class, () -> addressService.create(ADDRESS01_REQUEST_INCORRECT_LENGTH_CEP));
-//        verify(customerRepository, times(1)).findById(any());
-//        verify(viaCepFeign, times(1)).searchLocationByCep(any());
-//        verify(addressRepository, never()).save(any());
-//    }
-
     @Test
     @DisplayName("create: CEPNotFound > FeignCepNotFoundException")
     void create_withCEPNotFound_ThrowFeignCepNotFoundException() {
@@ -121,7 +109,6 @@ class AddressServiceTests {
         verify(addressRepository, never()).save(any());
     }
 
-
     @Test
     @DisplayName("update: InvalidCustomerId > CustomerNotFoundException")
     void update_withInvalidCustomerId_ThrowCustomerNotFoundException() {
@@ -134,19 +121,6 @@ class AddressServiceTests {
         verify(addressRepository, never()).save(any());
     }
 
-//    @Test
-//    @DisplayName("update: InValidLengthCEP > FeignException")
-//    void update_withInValidLengthCEP_ThrowFeignException(){
-//        when(customerRepository.findById(CUSTOMER01_IN_DB.getId())).thenReturn(Optional.of(CUSTOMER01_IN_DB));
-//        when(addressRepository.findById(ADDRESS01_TO_UPDATE.getId())).thenReturn(Optional.of(ADDRESS01));
-//        when(viaCepFeign.searchLocationByCep(ADDRESS01_REQUEST_INCORRECT_LENGTH_CEP.getCep())).thenThrow(FeignException.class);
-//
-//        assertThrows(FeignException.class, () -> addressService.update(CUSTOMER01_IN_DB.getId(), ADDRESS01_REQUEST_INCORRECT_LENGTH_CEP));
-//        verify(customerRepository, times(1)).findById(any());
-//        verify(viaCepFeign, times(1)).searchLocationByCep(any());
-//        verify(addressRepository, never()).save(any());
-//    }
-
     @Test
     @DisplayName("update: CEPNotFound > FeignCepNotFoundException")
     void update_withCEPNotFound_ThrowFeignCepNotFoundException() {
@@ -158,6 +132,25 @@ class AddressServiceTests {
         verify(customerRepository, times(1)).findById(any());
         verify(viaCepFeign, times(1)).searchLocationByCep(any());
         verify(addressRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("delete: AddressIdValid > Void")
+    void delete_withAddressIdValid_Void() {
+        when(addressRepository.findById(1L)).thenReturn(Optional.of(ADDRESS01));
+
+        addressService.delete(1L);
+
+        verify(addressRepository, times(1)).findById(1L);
+        verify(addressRepository, times(1)).delete(ADDRESS01);
+    }
+
+    @Test
+    @DisplayName("delete: AddressIdInvalid > AddressNotFoundException")
+    void delete_withAddressIdValidInvalid_ThrowAddressNotFoundException() {
+        when(addressRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(AddressNotFoundException.class, () -> addressService.delete(99L));
     }
 
 

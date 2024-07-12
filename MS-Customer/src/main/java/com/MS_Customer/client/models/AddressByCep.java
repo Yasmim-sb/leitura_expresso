@@ -21,6 +21,6 @@ public class AddressByCep {
 
     private String cep;
 
-    public String erro = "false";
+    private String erro = "false";
 
 }
