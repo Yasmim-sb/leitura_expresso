@@ -30,6 +30,15 @@ public class AddressConstants {
     .customerId(1L)
     .build();
 
+    public static AddressRequest ADDRESS03_REQUEST_CORRECT_FIELDS = AddressRequest.builder()
+    .street("Street Test 01")
+    .number("12")
+    .cep("01001-000")
+    .district("Center")
+    .complement("Complement test 01")
+    .customerId(2L)
+    .build();
+
     public static AddressRequest ADDRESS01_REQUEST_INCORRECT_CUSTOM_ID = AddressRequest.builder()
     .street("Street Test 01")
     .number("12")
@@ -74,6 +83,19 @@ public class AddressConstants {
     .cpf("117.885.222.96")
     .birthdate(LocalDate.of(1980, 1, 17))
     .email("pedro@email.com")
+    .password("1234567")
+    .active(true)
+    .addressList(null)
+    .build();
+
+    public static Customer CUSTOMER02_IN_DB = Customer.builder()
+    .id(2L)
+    .firstName("Maria")
+    .lastName("Souza")
+    .sex(SexEnum.FEMININO)
+    .cpf("778.556.222.78")
+    .birthdate(LocalDate.of(1984, 1, 19))
+    .email("m@email.com")
     .password("1234567")
     .active(true)
     .addressList(null)

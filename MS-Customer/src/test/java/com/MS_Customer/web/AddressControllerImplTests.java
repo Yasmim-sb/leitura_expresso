@@ -69,7 +69,7 @@ class AddressControllerImplTests {
     }
 
     @Test
-    @DisplayName("delete: AddressIdValidInvalid > AddressNotFoundException : Status_404")
+    @DisplayName("delete: AddressIdInvalid > AddressNotFoundException : Status_404")
     void delete_withAddressIdValidInvalid_ThrowAddressNotFoundException_Status_404() throws Exception {
         doThrow(AddressNotFoundException.class).when(addressService).delete(99L);
 

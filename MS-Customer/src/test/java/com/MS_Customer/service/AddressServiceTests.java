@@ -5,6 +5,7 @@ import com.MS_Customer.dto.AddressDTO;
 import com.MS_Customer.exceptions.customExceptions.AddressNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.FeignCepNotFoundException;
+import com.MS_Customer.exceptions.customExceptions.NotPossibleToAlterAddressException;
 import com.MS_Customer.repositories.AddressRepository;
 import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.services.AddressService;
@@ -116,6 +117,18 @@ class AddressServiceTests {
         when(customerRepository.findById(999L)).thenReturn(Optional.empty());
 
         assertThrows(CustomerNotFoundException.class, () -> addressService.update(ADDRESS01_TO_UPDATE.getId(), ADDRESS01_REQUEST_INCORRECT_CUSTOM_ID));
+        verify(customerRepository, times(1)).findById(any());
+        verify(viaCepFeign, never()).searchLocationByCep(any());
+        verify(addressRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("update: CustomerIdIsDifferentByConsult > NotPossibleToAlterAddressException")
+    void update_withCustomerIdIsDifferentByConsult_ThrowNotPossibleToAlterAddressException() {
+        when(addressRepository.findById(ADDRESS01_TO_UPDATE.getId())).thenReturn(Optional.of(ADDRESS01));
+        when(customerRepository.findById(ADDRESS03_REQUEST_CORRECT_FIELDS.getCustomerId())).thenReturn(Optional.of(CUSTOMER02_IN_DB));
+
+        assertThrows(NotPossibleToAlterAddressException.class, () -> addressService.update(ADDRESS01_TO_UPDATE.getId(), ADDRESS03_REQUEST_CORRECT_FIELDS));
         verify(customerRepository, times(1)).findById(any());
         verify(viaCepFeign, never()).searchLocationByCep(any());
         verify(addressRepository, never()).save(any());
