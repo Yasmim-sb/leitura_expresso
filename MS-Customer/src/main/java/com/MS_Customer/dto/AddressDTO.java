@@ -1,7 +1,6 @@
 package com.MS_Customer.dto;
 
 import com.MS_Customer.entities.Address;
-import com.MS_Customer.request.AddressRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

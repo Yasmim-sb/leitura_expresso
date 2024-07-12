@@ -1,6 +1,7 @@
 package com.MS_Customer.web;
 
 import com.MS_Customer.controllers.AddressControllerImpl;
+import com.MS_Customer.request.AddressRequest;
 import com.MS_Customer.services.AddressService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +42,8 @@ class AddressControllerImplTests {
 //        mockMvc.perform(post("/v1/address")
 //        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_CORRECT_FIELDS))
 //        .contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isCreated());
+//        .andExpect(status().isCreated())
+//        .andExpect(jsonPath("$.id").value(ADDRESS01_DTO.getId()));
 //
 //    }
 //
