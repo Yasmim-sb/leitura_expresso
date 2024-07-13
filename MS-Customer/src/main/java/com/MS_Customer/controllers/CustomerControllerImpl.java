@@ -1,6 +1,7 @@
 package com.MS_Customer.controllers;
 
 import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.dto.CustomerNewPasswordDTO;
 import com.MS_Customer.interfaces.CustomerController;
 import com.MS_Customer.services.CustomerService;
 import jakarta.validation.Valid;
@@ -30,5 +31,12 @@ public class CustomerControllerImpl implements CustomerController {
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO customerDTO) {
         var customerDTOResponse = customerService.createCustomer(customerDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOResponse);
+    }
+
+    @Override
+    @PutMapping("/customers/{id}/password")
+    public ResponseEntity<Void> changePasswordCustomer(@PathVariable Long id, @RequestBody @Valid CustomerNewPasswordDTO newPasswordDTO) {
+        customerService.updatePassword(id, newPasswordDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
