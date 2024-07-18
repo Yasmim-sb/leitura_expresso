@@ -36,17 +36,17 @@ class AddressControllerImplTests {
     @MockBean
     AddressService addressService;
 
-//    @Test
-//    @DisplayName("create: validFields > ReturnAddressDTO : Status_201")
-//    void create_withValidFields_ReturnAddressDTO_Status201() throws Exception{
-//        when(addressService.create(ADDRESS01_REQUEST_CORRECT_FIELDS)).thenReturn(ADDRESS01_DTO);
-//
-//        mockMvc.perform(post("/v1/address")
-//        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_CORRECT_FIELDS))
-//        .contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isCreated());
-//
-//    }
+    @Test
+    @DisplayName("create: validFields > ReturnAddressDTO : Status_201")
+    void create_withValidFields_ReturnAddressDTO_Status201() throws Exception{
+        when(addressService.create(ADDRESS01_REQUEST_CORRECT_FIELDS)).thenReturn(ADDRESS01_DTO);
+
+        mockMvc.perform(post("/v1/address")
+        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_CORRECT_FIELDS))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated());
+
+    }
 //
 //    @Test
 //    @DisplayName("create: InValidFields > MethodArgumentNotValidException: Status_400")

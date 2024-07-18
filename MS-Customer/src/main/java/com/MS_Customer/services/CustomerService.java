@@ -1,7 +1,7 @@
 package com.MS_Customer.services;
 
 import com.MS_Customer.dto.CustomerDTO;
-import com.MS_Customer.dto.CustomerNewPasswordDTO;
+import com.MS_Customer.request.CustomerNewPasswordRequest;
 import com.MS_Customer.entities.Customer;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFound;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
@@ -59,7 +59,7 @@ public class CustomerService {
         return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
     }
 
-    public void updatePassword(Long id, CustomerNewPasswordDTO newPasswordDTO){
+    public void updatePassword(Long id, CustomerNewPasswordRequest newPasswordDTO){
         changePasswordFromCustomer(getCustomerById(id), newPasswordDTO);
     }
 
@@ -67,7 +67,7 @@ public class CustomerService {
         return customerRepository.findById(id).orElseThrow(CustomerNotFoundException::new);
     }
 
-    private void changePasswordFromCustomer(Customer customer, CustomerNewPasswordDTO newPasswordDTO){
+    private void changePasswordFromCustomer(Customer customer, CustomerNewPasswordRequest newPasswordDTO){
         customer.setPassword(newPasswordDTO.getNewPassword());
         customerRepository.save(customer);
     }
