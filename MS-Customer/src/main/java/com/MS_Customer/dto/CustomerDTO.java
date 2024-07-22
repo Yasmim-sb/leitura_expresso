@@ -1,7 +1,10 @@
 package com.MS_Customer.dto;
 
+import com.MS_Customer.dto.response.AddressResponse;
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.enums.SexEnum;
+//import com.MS_Customer.validation.ValidYear;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -31,6 +34,8 @@ public class CustomerDTO {
 
     private String cpf;
 
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+//    @ValidYear(min = 1900)
     private LocalDate birthdate;
 
     private String email;

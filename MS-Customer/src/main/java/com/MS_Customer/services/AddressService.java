@@ -4,6 +4,7 @@ import com.MS_Customer.client.ViaCepFeign;
 import com.MS_Customer.client.models.AddressByCep;
 import com.MS_Customer.dto.AddressDTO;
 import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.dto.response.AddressResponse;
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;

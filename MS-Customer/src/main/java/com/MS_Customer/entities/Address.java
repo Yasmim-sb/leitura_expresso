@@ -57,4 +57,7 @@ public class Address {
         this.complement = request.getComplement();
         this.customerId = customer;
     }
+
+    public Address(Long id, String state, String city, String district, String street, String number, String cep, String complement) {
+    }
 }

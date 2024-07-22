@@ -2,6 +2,8 @@ package com.MS_Customer.services.mapping;
 
 import com.MS_Customer.dto.AddressDTO;
 import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.dto.response.AddressResponse;
+import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
 import org.springframework.stereotype.Component;
 

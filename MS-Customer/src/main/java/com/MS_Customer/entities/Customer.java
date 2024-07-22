@@ -1,7 +1,6 @@
 package com.MS_Customer.entities;
 
 import com.MS_Customer.enums.SexEnum;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -20,7 +19,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+//@Builder
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +39,7 @@ public class Customer {
     message = "CPF must be in the format 000.000.000-00")
     private String cpf;
 
+//    @JsonFormat
     private LocalDate birthdate;
 
     @Column(unique = true)
