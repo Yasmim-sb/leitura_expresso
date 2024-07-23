@@ -17,6 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static com.MS_Customer.common.AddressConstants.*;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -36,28 +37,28 @@ class AddressControllerImplTests {
     @MockBean
     AddressService addressService;
 
-//    @Test
-//    @DisplayName("create: validFields > ReturnAddressDTO : Status_201")
-//    void create_withValidFields_ReturnAddressDTO_Status201() throws Exception{
-//        when(addressService.create(ADDRESS01_REQUEST_CORRECT_FIELDS)).thenReturn(ADDRESS01_DTO);
-//
-//        mockMvc.perform(post("/v1/address")
-//        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_CORRECT_FIELDS))
-//        .contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isCreated());
-//
-//    }
-//
-//    @Test
-//    @DisplayName("create: InValidFields > MethodArgumentNotValidException: Status_400")
-//    void create_withInValidFields_ThrowMethodArgumentNotValidException_Status400() throws Exception{
-//        when(addressService.create(ADDRESS01_REQUEST_INVALID_FIELDS)).thenThrow(MethodArgumentNotValidException.class);
-//
-//        mockMvc.perform(post("/v1/address")
-//        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_INVALID_FIELDS))
-//        .contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isBadRequest());
-//    }
+    @Test
+    @DisplayName("create: validFields > ReturnAddressDTO : Status_201")
+    void create_withValidFields_ReturnAddressDTO_Status201() throws Exception{
+        when(addressService.create(ADDRESS01_REQUEST_CORRECT_FIELDS)).thenReturn(ADDRESS01_DTO);
+
+        mockMvc.perform(post("/v1/address")
+        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_CORRECT_FIELDS))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated());
+
+    }
+
+    @Test
+    @DisplayName("create: InValidFields > MethodArgumentNotValidException: Status_400")
+    void create_withInValidFields_ThrowMethodArgumentNotValidException_Status400() throws Exception{
+
+        mockMvc.perform(post("/v1/address")
+        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_INVALID_FIELDS))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
+    }
 
     @Test
     @DisplayName("delete: AddressIdValid > ReturnsVoid : Status_204")

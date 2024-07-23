@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class AddressRequest {
     @NotBlank(message = "Street cannot be blank")
     private String street;

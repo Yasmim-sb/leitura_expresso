@@ -46,21 +46,8 @@ class CustomerControllerImplTests {
         verify(customerService, times(1)).updatePassword(any(), any());
     }
 
-//    @Test
-//    @DisplayName("changePasswordCustomer: InvalidIdCustomer > ThrowsCustomerNotFoundException : Status_404")
-//    void changePasswordCustomer_withInvalidIdCustomer_ThrowsCustomerNotFoundException_Status_404() throws Exception{
-//        doThrow(CustomerNotFoundException.class).when(customerService).updatePassword(99L, CUSTOM_CORRECT_PASSWORD_REQUEST);
-//
-//        mockMvc.perform(put("/v1/customers/{id}/password", 99L)
-//        .content(objectMapper.writeValueAsString(CUSTOM_CORRECT_PASSWORD_REQUEST))
-//        .contentType(MediaType.APPLICATION_JSON))
-//        .andExpect(status().isNotFound());
-//
-//        verify(customerService, times(1)).updatePassword(any(), any());
-//    }
-
     @Test
-    @DisplayName("changePasswordCustomer: ValidPassword > Void : Status_204")
+    @DisplayName("changePasswordCustomer: ValidPassword > Void : Status_400")
     void changePasswordCustomer_withInvalidPassword_ThrowsMethodArgumentNotValidException_Status400() throws Exception{
 
         mockMvc.perform(put("/v1/customers/{id}/password", 1L)
