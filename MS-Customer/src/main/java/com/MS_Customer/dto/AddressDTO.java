@@ -29,7 +29,6 @@ public class AddressDTO {
 
     private String complement;
 
-//    @JsonIgnore
     private Customer customerId;
 
     public AddressDTO(Address address) {

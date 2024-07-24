@@ -1,20 +1,11 @@
 package com.MS_Customer.dto;
 
 import com.MS_Customer.dto.response.AddressResponse;
-import com.MS_Customer.entities.Address;
 import com.MS_Customer.enums.SexEnum;
 //import com.MS_Customer.validation.ValidYear;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -44,6 +35,6 @@ public class CustomerDTO {
 
     private boolean active = true;
 
-    private List<AddressDTO> addressList;
+    private List<AddressResponse> addressList;
 
 }

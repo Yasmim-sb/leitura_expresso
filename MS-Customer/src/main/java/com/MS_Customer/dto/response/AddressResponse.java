@@ -1,7 +1,9 @@
 package com.MS_Customer.dto.response;
 
+import com.MS_Customer.dto.CustomerDTO;
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddressResponse {
+public class AddressResponse{
+    @JsonIgnore
     private Long id;
 
     private String state;
@@ -27,7 +30,4 @@ public class AddressResponse {
     private String cep;
 
     private String complement;
-
-    public AddressResponse(Address address) {
-    }
 }

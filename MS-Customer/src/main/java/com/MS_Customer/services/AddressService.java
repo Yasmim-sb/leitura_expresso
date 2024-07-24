@@ -74,6 +74,7 @@ public class AddressService {
         .map(AddressDTO::new)
         .collect(Collectors.toList());
 
+        List<AddressResponse> AddressResponse = List.of();
         return new CustomerDTO(
         customer.getId(),
         customer.getFirstName(),
@@ -84,7 +85,7 @@ public class AddressService {
         customer.getEmail(),
         customer.getPassword(),
         customer.isActive(),
-        addressDTOList
+        AddressResponse
         );
     }
 }

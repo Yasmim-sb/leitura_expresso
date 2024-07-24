@@ -19,7 +19,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//@Builder
+@Builder
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,5 +56,5 @@ public class Customer {
     @OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Address> addressList;
-
+    
 }

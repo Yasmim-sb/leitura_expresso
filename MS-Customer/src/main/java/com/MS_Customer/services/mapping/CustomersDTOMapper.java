@@ -1,16 +1,20 @@
 package com.MS_Customer.services.mapping;
 
-import com.MS_Customer.dto.AddressDTO;
 import com.MS_Customer.dto.CustomerDTO;
 import com.MS_Customer.dto.response.AddressResponse;
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@AllArgsConstructor
 public class CustomersDTOMapper {
+
+    private final AddressToAddressResponse addressResponse;
 
     public CustomerDTO createCustomerDTO(Customer customer){
         var customerDTO = new CustomerDTO();
@@ -24,21 +28,13 @@ public class CustomersDTOMapper {
         customerDTO.setSex(customer.getSex());
         customerDTO.setBirthdate(customer.getBirthdate());
 
-        if (customer.getAddressList() != null) {
-            customerDTO.setAddressList(customer.getAddressList().stream()
-            .map(address -> new AddressDTO(
-            address.getId(),
-            address.getState(),
-            address.getCity(),
-            address.getDistrict(),
-            address.getStreet(),
-            address.getNumber(),
-            address.getCep(),
-            address.getComplement(),
-            customer
-            ))
-            .collect(Collectors.toList()));
-        }
+        List<Address> addressList = customer.getAddressList();
+
+        List<AddressResponse> addressResponseList = addressList.stream()
+                .map(addressResponse::createAddressResponse)
+                .collect(Collectors.toList());
+
+        customerDTO.setAddressList(addressResponseList);
 
         return customerDTO;
     }

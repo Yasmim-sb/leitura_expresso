@@ -26,9 +26,9 @@ public class CustomerControllerImpl implements CustomerController {
         CustomerDTO customerDTO = customerService.getCustomerById(id);
         return new ResponseEntity<>(customerDTO, HttpStatus.OK).getBody();
     }
-    @PostMapping("/customers")
-    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO customerDTO) {
-        var customerDTOResponse = customerService.createCustomer(customerDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOResponse);
-    }
+//    @PostMapping("/customers")
+//    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO customerDTO) {
+//        var customerDTOResponse = customerService.createCustomer(customerDTO);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOResponse);
+//    }
 }

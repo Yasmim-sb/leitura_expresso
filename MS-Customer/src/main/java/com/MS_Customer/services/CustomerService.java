@@ -31,7 +31,7 @@ public class CustomerService {
         customerExisting.setLastName(customerDTO.getLastName());
         customerExisting.setCpf(customerDTO.getCpf());
         customerExisting.setBirthdate(customerDTO.getBirthdate());
-        customerExisting.setEmail(customerDTO.getEmail());
+//        customerExisting.setEmail(customerDTO.getEmail());
         customerExisting.setSex(customerDTO.getSex());
         customerExisting.setActive(customerDTO.isActive());
 
@@ -39,24 +39,24 @@ public class CustomerService {
     }
 
 
-    public CustomerDTO createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
-        if (customerDTO.getFirstName().isEmpty() ||
-        customerDTO.getLastName().isEmpty() ||
-        customerDTO.getSex() == null ||
-        customerDTO.getCpf().isEmpty() ||
-        customerDTO.getBirthdate() == null ||
-        customerDTO.getEmail().isEmpty() ||
-        customerDTO.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
-        } else {
-            var customer = customerMapper.createCustomer(customerDTO);
-            return customersDTOMapper.createCustomerDTO(customerRepository.save(customer));
-        }
-    }
-//    public ResponseEntity<CustomerDTO> getCustomer(Long id) {
-//        var customer = customerRepository.getReferenceById(id);
-//        return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
+//    public CustomerDTO createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
+//        if (customerDTO.getFirstName().isEmpty() ||
+//        customerDTO.getLastName().isEmpty() ||
+//        customerDTO.getSex() == null ||
+//        customerDTO.getCpf().isEmpty() ||
+//        customerDTO.getBirthdate() == null ||
+//        customerDTO.getEmail().isEmpty() ||
+//        customerDTO.getPassword().isEmpty()) {
+//            throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
+//        } else {
+//            var customer = customerMapper.createCustomer(customerDTO);
+//            return customersDTOMapper.createCustomerDTO(customerRepository.save(customer));
+//        }
 //    }
+    public ResponseEntity<CustomerDTO> getCustomer(Long id) {
+        var customer = customerRepository.getReferenceById(id);
+        return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
+    }
     public CustomerDTO getCustomerById(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
         .orElseThrow(CustomerNotFound::new);

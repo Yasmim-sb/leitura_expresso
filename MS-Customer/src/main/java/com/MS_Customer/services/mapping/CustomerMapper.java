@@ -1,15 +1,22 @@
 package com.MS_Customer.services.mapping;
 
 import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.dto.response.AddressResponse;
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.stream.Collectors;
+import java.util.Collections;
+import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class CustomerMapper {
-    public Customer createCustomer(CustomerDTO customerDTO){
+
+    private final AddressToAddressResponse address;
+
+    public CustomerDTO createCustomer(CustomerDTO customerDTO){
         var customer = new Customer();
 
         customer.setId(customerDTO.getId());
@@ -21,22 +28,13 @@ public class CustomerMapper {
         customer.setSex(customerDTO.getSex());
         customer.setBirthdate(customerDTO.getBirthdate());
 
-        if (customerDTO.getAddressList() != null) {
-            customer.setAddressList(customerDTO.getAddressList().stream()
-            .map(addressDTO -> new Address(
-            addressDTO.getId(),
-            addressDTO.getState(),
-            addressDTO.getCity(),
-            addressDTO.getDistrict(),
-            addressDTO.getStreet(),
-            addressDTO.getNumber(),
-            addressDTO.getCep(),
-            addressDTO.getComplement(),
-            customer
-            ))
-            .collect(Collectors.toList()));
-        }
 
-        return customer;
+        List<AddressResponse> addressList = customerDTO.getAddressList();
+
+        List<Address> addressL = Collections.singletonList(address.createAddress((AddressResponse) addressList));
+
+        customer.setAddressList(addressL);
+
+        return customerDTO;
     }
 }
