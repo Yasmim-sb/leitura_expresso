@@ -1,7 +1,6 @@
 package com.MS_Customer.entities;
 
 import com.MS_Customer.enums.SexEnum;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
