@@ -39,7 +39,6 @@ public class Customer {
     message = "CPF must be in the format 000.000.000-00")
     private String cpf;
 
-//    @JsonFormat
     private LocalDate birthdate;
 
     @Column(unique = true)

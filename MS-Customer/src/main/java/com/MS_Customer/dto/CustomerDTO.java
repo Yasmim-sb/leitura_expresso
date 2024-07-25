@@ -25,8 +25,6 @@ public class CustomerDTO {
 
     private String cpf;
 
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-//    @ValidYear(min = 1900)
     private LocalDate birthdate;
 
     private String email;

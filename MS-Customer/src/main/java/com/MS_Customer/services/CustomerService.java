@@ -27,13 +27,7 @@ public class CustomerService {
         if (customerDTO.getPassword() != null){
             throw new NotAllowedException();
         }
-        customerExisting.setFirstName(customerDTO.getFirstName());
-        customerExisting.setLastName(customerDTO.getLastName());
-        customerExisting.setCpf(customerDTO.getCpf());
-        customerExisting.setBirthdate(customerDTO.getBirthdate());
-//        customerExisting.setEmail(customerDTO.getEmail());
-        customerExisting.setSex(customerDTO.getSex());
-        customerExisting.setActive(customerDTO.isActive());
+        NullBeanUtils.copyNonNullProperties(customerDTO, customerExisting);
 
         return customersDTOMapper.createCustomerDTO(customerRepository.save(customerExisting));
     }

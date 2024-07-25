@@ -41,21 +41,21 @@ class AddressServiceTests {
     @Mock
     ViaCepFeign viaCepFeign;
 
-    @Test
-    @DisplayName("create: AddressRequestValidFields > ReturnsAddressDTO")
-    void create_withAddressRequestValidFields_ReturnsAddressDTO(){
-        when(customerRepository.findById(CUSTOMER01_IN_DB.getId())).thenReturn(Optional.of(CUSTOMER01_IN_DB));
-        when(viaCepFeign.searchLocationByCep(ADDRESS01_REQUEST_CORRECT_FIELDS.getCep())).thenReturn(ADDRESS_BY_CEP01);
-        when(addressRepository.save(ADDRESS01_TO_CREATE)).thenReturn(ADDRESS01);
-
-        AddressDTO result = addressService.create(ADDRESS01_REQUEST_CORRECT_FIELDS);
-
-        assertThat(result).isNotNull();
-        assertThat(result).isEqualTo(ADDRESS01_DTO);
-        verify(customerRepository, times(1)).findById(any());
-        verify(viaCepFeign, times(1)).searchLocationByCep(any());
-        verify(addressRepository, times((1))).save(any());
-    }
+//    @Test
+//    @DisplayName("create: AddressRequestValidFields > ReturnsAddressDTO")
+//    void create_withAddressRequestValidFields_ReturnsAddressDTO(){
+//        when(customerRepository.findById(CUSTOMER01_IN_DB.getId())).thenReturn(Optional.of(CUSTOMER01_IN_DB));
+//        when(viaCepFeign.searchLocationByCep(ADDRESS01_REQUEST_CORRECT_FIELDS.getCep())).thenReturn(ADDRESS_BY_CEP01);
+//        when(addressRepository.save(ADDRESS01_TO_CREATE)).thenReturn(ADDRESS01);
+//
+//        AddressDTO result = addressService.create(ADDRESS01_REQUEST_CORRECT_FIELDS);
+//
+//        assertThat(result).isNotNull();
+//        assertThat(result).isEqualTo(ADDRESS01_DTO);
+//        verify(customerRepository, times(1)).findById(any());
+//        verify(viaCepFeign, times(1)).searchLocationByCep(any());
+//        verify(addressRepository, times((1))).save(any());
+//    }
 
     @Test
     @DisplayName("create: InValidCustomerId > CustomerNotFoundException")

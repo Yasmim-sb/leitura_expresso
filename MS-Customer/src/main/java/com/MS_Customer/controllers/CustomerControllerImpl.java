@@ -19,16 +19,11 @@ public class CustomerControllerImpl implements CustomerController {
     @PutMapping("/customers/{id}")
     public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerDTO customerDTO){
         var customerS = customerService.updateCustomer(id, customerDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerS);
+        return ResponseEntity.status(HttpStatus.OK).body(customerS);
     }
     @GetMapping("/customers/{id}")
     public CustomerDTO getCustomer(@PathVariable Long id) {
         CustomerDTO customerDTO = customerService.getCustomerById(id);
         return new ResponseEntity<>(customerDTO, HttpStatus.OK).getBody();
     }
-//    @PostMapping("/customers")
-//    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO customerDTO) {
-//        var customerDTOResponse = customerService.createCustomer(customerDTO);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOResponse);
-//    }
 }
