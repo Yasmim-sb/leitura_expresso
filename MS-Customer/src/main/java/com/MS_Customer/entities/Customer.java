@@ -1,25 +1,25 @@
 package com.MS_Customer.entities;
 
-import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.enums.SexEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer implements UserDetails {
+@Builder
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,16 +30,17 @@ public class Customer implements UserDetails {
     @Size(min = 3)
     private String lastName;
 
+    @Enumerated(EnumType.STRING)
     private SexEnum sex;
 
-    @Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}",
-            message = "CPF must be in the format 000.000.000-00")
-    //@Column(unique = true) - Está comentado pois durante os testes eu não quero ficar trocando informações
+    @Column(unique = true)
+    @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}",
+    message = "CPF must be in the format 000.000.000-00")
     private String cpf;
 
     private LocalDate birthdate;
 
-    //@Column(unique = true) -  Está comentado pois durante os testes eu não quero ficar trocando informações
+    @Column(unique = true)
     @Email
     @NotBlank
     private String email;
@@ -50,45 +51,7 @@ public class Customer implements UserDetails {
 
     private boolean active = true;
 
-    @Enumerated(EnumType.STRING)
-    private CustomerRole role = CustomerRole.UNREGISTERED_CUSTOMER;
+    @OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addressList;
 
-    public Customer(String email, String password, CustomerRole role){
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == CustomerRole.REGISTERED_CUSTOMER)
-            return List.of(new SimpleGrantedAuthority("ROLE_REGISTERED_CUSTOMER"), new SimpleGrantedAuthority("ROLE_UNREGISTERED_CUSTOMER"));
-        else
-            return List.of(new SimpleGrantedAuthority("ROLE_UNREGISTERED_CUSTOMER"));
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return active;
-    }
 }

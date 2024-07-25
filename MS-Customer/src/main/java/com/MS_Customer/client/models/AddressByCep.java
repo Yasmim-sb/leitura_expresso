@@ -1,12 +1,13 @@
 package com.MS_Customer.client.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.MS_Customer.enums.StateUFEnum;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@RequiredArgsConstructor
+@Builder
 public class AddressByCep {
     private String logradouro;
 
@@ -16,8 +17,10 @@ public class AddressByCep {
 
     private String localidade;
 
-    private String uf;
+    private StateUFEnum uf;
 
     private String cep;
+
+    private String erro = "false";
 
 }
