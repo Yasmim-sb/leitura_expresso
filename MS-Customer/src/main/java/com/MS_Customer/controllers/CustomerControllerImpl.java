@@ -30,6 +30,7 @@ public class CustomerControllerImpl implements CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOResponse.getBody());
     }
 
+    /*
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid CustomerAuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
@@ -37,10 +38,12 @@ public class CustomerControllerImpl implements CustomerController {
         var token = tokenService.generateToken((Customer) auth.getPrincipal());
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
+    */
 
-    @GetMapping("/{id}")
+    @GetMapping("/customers/{id}")
     public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long id) {
         CustomerDTO customerDTO = customerService.getCustomer(id).getBody();
         return new ResponseEntity<>(customerDTO, HttpStatus.OK);
     }
 }
+

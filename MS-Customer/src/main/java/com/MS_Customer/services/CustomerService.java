@@ -13,6 +13,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,8 +23,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final CustomerDTOMapper customersDTOMapper;
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
 
@@ -31,7 +31,7 @@ public class CustomerService {
             return ResponseEntity.badRequest().build();
         }
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(customerDTO.getPassword());
+        String encryptedPassword = passwordEncoder.encode(customerDTO.getPassword());
         customerDTO.setPassword(encryptedPassword);
 
         if (customerDTO.getFirstName().isEmpty() ||
@@ -47,13 +47,8 @@ public class CustomerService {
             customer.setRole(CustomerRole.UNREGISTERED_CUSTOMER);
             customerRepository.save(customer);
 
-            var usernamePassword = new UsernamePasswordAuthenticationToken(customerDTO.getEmail(), customerDTO.getPassword());
-            Authentication auth = authenticationManager.authenticate(usernamePassword);
-
-            var token = tokenService.generateToken((Customer) auth.getPrincipal());
-
             var response = customersDTOMapper.createCustomerDTO(customer);
-            return ResponseEntity.ok().header("Authorization", "Bearer " + token).body(response);
+            return ResponseEntity.ok(response);
         }
     }
 
@@ -62,3 +57,5 @@ public class CustomerService {
         return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
     }
 }
+
+
