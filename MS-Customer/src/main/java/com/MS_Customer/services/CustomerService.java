@@ -8,9 +8,10 @@ import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
 import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.services.mapping.CustomerMapper;
-import com.MS_Customer.services.mapping.CustomersDTOMapper;
+import com.MS_Customer.services.mapping.CustomerDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +20,34 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
-    private final CustomersDTOMapper customersDTOMapper;
+    private final CustomerDTOMapper customersDTOMapper;
+    private final PasswordEncoder passwordEncoder;
+
+    public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
+
+        if (customerRepository.findByEmail(customerDTO.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String encryptedPassword = passwordEncoder.encode(customerDTO.getPassword());
+        customerDTO.setPassword(encryptedPassword);
+
+        if (customerDTO.getFirstName().isEmpty() ||
+                customerDTO.getLastName().isEmpty() ||
+                customerDTO.getSex() == null ||
+                customerDTO.getCpf().isEmpty() ||
+                customerDTO.getBirthdate() == null ||
+                customerDTO.getEmail().isEmpty() ||
+                customerDTO.getPassword().isEmpty()) {
+            throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
+        } else {
+            var customer = customerMapper.createCustomer(customerDTO);
+            customerRepository.save(customer);
+
+            var response = customersDTOMapper.createCustomerDTO(customer);
+            return ResponseEntity.ok(response);
+        }
+    }
 
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
         var customerExisting = customerRepository.findById(id)
@@ -39,21 +67,6 @@ public class CustomerService {
         return customersDTOMapper.createCustomerDTO(customerRepository.save(customerExisting));
     }
 
-
-    public CustomerDTO createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
-        if (customerDTO.getFirstName().isEmpty() ||
-        customerDTO.getLastName().isEmpty() ||
-        customerDTO.getSex() == null ||
-        customerDTO.getCpf().isEmpty() ||
-        customerDTO.getBirthdate() == null ||
-        customerDTO.getEmail().isEmpty() ||
-        customerDTO.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
-        } else {
-            var customer = customerMapper.createCustomer(customerDTO);
-            return customersDTOMapper.createCustomerDTO(customerRepository.save(customer));
-        }
-    }
     public ResponseEntity<CustomerDTO> getCustomer(Long id) {
         var customer = customerRepository.getReferenceById(id);
         return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));

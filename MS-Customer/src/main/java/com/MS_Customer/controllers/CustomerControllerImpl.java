@@ -20,7 +20,7 @@ public class CustomerControllerImpl implements CustomerController {
     @PostMapping("/customers")
     public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO customerDTO) {
         var customerDTOResponse = customerService.createCustomer(customerDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOResponse.getBody());
     }
 
     @PutMapping("/customers/{id}")
