@@ -25,43 +25,12 @@ import java.util.stream.Collectors;
 public class AddressService {
 
     private final ViaCepFeign viaCepFeign;
+
     private final AddressRepository addressRepository;
+
     private final CustomerRepository customerRepository;
 
     public AddressDTO create(AddressRequest request) {
-        Customer customer = getCustomerByCustomerId(request.getCustomerId());
-        Address address = saveAddress(request, customer);
-
-        return new AddressDTO(address);
-    }
-
-    private Address saveAddress(AddressRequest request, Customer customer) {
-        AddressByCep addressByCep = searchByCep(request.getCep());
-
-        Address address = Address.builder()
-        .state(addressByCep.getUf().getNome())
-        .city(addressByCep.getLocalidade())
-        .district(request.getDistrict())
-        .street(request.getStreet())
-        .number(request.getNumber())
-        .cep(request.getCep())
-        .complement(request.getComplement())
-        .customerId(customer)
-        .build();
-
-        return addressRepository.save(address);
-    }
-
-    private Customer getCustomerByCustomerId(Long customerId) {
-        return customerRepository.findById(customerId)
-        .orElseThrow(CustomerNotFoundException::new);
-    }
-
-    private AddressByCep searchByCep(String cep) {
-        AddressByCep addressByCep = viaCepFeign.searchLocationByCep(cep);
-
-        checkCep(addressByCep.getErro().equalsIgnoreCase("true"));
-
         return new AddressDTO(salveAddress(request.getCep(), request, getCustomByCustomerId(request.getCustomerId())));
     }
 
@@ -108,13 +77,12 @@ public class AddressService {
 
         checkCep(byCep.getErro().equalsIgnoreCase("true"));
 
-        return addressByCep;
+        return byCep;
     }
 
     private void checkCep(boolean check) {
-        if (check) {
+        if (check)
             throw new FeignCepNotFoundException();
-        }
     }
 
     public CustomerDTO convertToCustomerDTO(Customer customer) {

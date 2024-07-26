@@ -25,9 +25,9 @@ public class CustomerService {
 
     public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
 
-//        if (customerRepository.findByEmail(customerDTO.getEmail()).isPresent()) {
-//            return ResponseEntity.badRequest().build();
-//        }
+        if (customerRepository.findByEmail(customerDTO.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
 
         String encryptedPassword = passwordEncoder.encode(customerDTO.getPassword());
         customerDTO.setPassword(encryptedPassword);
@@ -42,7 +42,7 @@ public class CustomerService {
             throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
         } else {
             var customer = customerMapper.createCustomer(customerDTO);
-            customerRepository.save(customerMapper.createCustomer(customerDTO));
+            customerRepository.save(customer);
 
             var response = customersDTOMapper.createCustomerDTO(customer);
             return ResponseEntity.ok(response);

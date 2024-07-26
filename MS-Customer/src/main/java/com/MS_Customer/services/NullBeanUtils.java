@@ -17,6 +17,7 @@ public class NullBeanUtils {
         final Field[] allFields = source.getClass().getDeclaredFields();
         Set<String> nullNames = new HashSet<>();
         for (Field field : allFields) {
+            boolean originalAccessible = field.isAccessible();
             field.setAccessible(true);
             try {
                 if (field.get(source) == null) {
@@ -24,6 +25,8 @@ public class NullBeanUtils {
                 }
             } catch (IllegalAccessException e) {
                 throw new BeansException("Could not acess field", e) {};
+            } finally {
+                field.setAccessible(originalAccessible);
             }
         }
         return nullNames.toArray(new String[0]);
