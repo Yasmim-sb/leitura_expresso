@@ -1,17 +1,10 @@
 package com.MS_Customer.dto;
 
+import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.enums.SexEnum;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -37,4 +30,7 @@ public class CustomerDTO {
     private String password;
 
     private boolean active = true;
+
+    private CustomerRole role;
+
 }
