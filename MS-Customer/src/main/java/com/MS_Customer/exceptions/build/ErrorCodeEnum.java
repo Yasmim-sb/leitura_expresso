@@ -16,7 +16,9 @@ public enum ErrorCodeEnum {
 
     SYSTEM_ERROR("Unavailable server"),
 
-    NOT_ALLOWED("Not allowed");
+    NOT_ALLOWED("Not allowed"),
+
+    NOT_ALLOWED_ALTER_ADDRESS("Not allowed alter address from other customer, the id need to be the same");
 
     private final String message;
 }

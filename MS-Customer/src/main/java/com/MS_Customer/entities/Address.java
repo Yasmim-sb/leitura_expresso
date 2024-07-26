@@ -58,6 +58,17 @@ public class Address {
         this.customerId = customer;
     }
 
-    public Address(Long id, String state, String city, String district, String street, String number, String cep, String complement) {
+    public Address(Long id, String state, String city, String district, String street, String number, String cep, String complement) {}
+
+    public Address(AddressByCep byCep, AddressRequest request, Customer customer, Address addressInDb){
+        this.id = addressInDb.getId();
+        this.state = byCep.getUf().getNome();
+        this.city = byCep.getLocalidade();
+        this.district = request.getDistrict();
+        this.street = request.getStreet();
+        this.number = request.getNumber();
+        this.cep = request.getCep();
+        this.complement = request.getComplement();
+        this.customerId = customer;
     }
 }

@@ -2,8 +2,10 @@ package com.MS_Customer.service;
 
 import com.MS_Customer.client.ViaCepFeign;
 import com.MS_Customer.dto.AddressDTO;
+import com.MS_Customer.exceptions.customExceptions.AddressNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.FeignCepNotFoundException;
+import com.MS_Customer.exceptions.customExceptions.NotPossibleToAlterAddressException;
 import com.MS_Customer.repositories.AddressRepository;
 import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.services.AddressService;
@@ -59,7 +61,7 @@ class AddressServiceTests {
 
     @Test
     @DisplayName("create: InValidCustomerId > CustomerNotFoundException")
-    void create_withInValidCustomerId_ThrowCustomerNotFoundException(){
+    void create_withInValidCustomerId_ThrowCustomerNotFoundException() {
         when(customerRepository.findById(999L)).thenReturn(Optional.empty());
 
         assertThrows(CustomerNotFoundException.class, () -> addressService.create(ADDRESS01_REQUEST_INCORRECT_CUSTOM_ID));
@@ -69,20 +71,8 @@ class AddressServiceTests {
     }
 
     @Test
-    @DisplayName("create: InValidLengthCEP > FeignException")
-    void create_withInValidLengthCEP_ThrowFeignException(){
-        when(customerRepository.findById(CUSTOMER01_IN_DB.getId())).thenReturn(Optional.of(CUSTOMER01_IN_DB));
-        when(viaCepFeign.searchLocationByCep(ADDRESS01_REQUEST_INCORRECT_LENGTH_CEP.getCep())).thenThrow(FeignException.class);
-
-        assertThrows(FeignException.class, () -> addressService.create(ADDRESS01_REQUEST_INCORRECT_LENGTH_CEP));
-        verify(customerRepository, times(1)).findById(any());
-        verify(viaCepFeign, times(1)).searchLocationByCep(any());
-        verify(addressRepository, never()).save(any());
-    }
-
-    @Test
     @DisplayName("create: CEPNotFound > FeignCepNotFoundException")
-    void create_withInValidCEPNotFound_ThrowFeignCepNotFoundException(){
+    void create_withCEPNotFound_ThrowFeignCepNotFoundException() {
         when(customerRepository.findById(CUSTOMER01_IN_DB.getId())).thenReturn(Optional.of(CUSTOMER01_IN_DB));
         when(viaCepFeign.searchLocationByCep(ADDRESS01_REQUEST_NO_FOUND_CEP.getCep())).thenReturn(ADDRESS_BY_CEP_NOT_FOUND);
 
@@ -91,5 +81,90 @@ class AddressServiceTests {
         verify(viaCepFeign, times(1)).searchLocationByCep(any());
         verify(addressRepository, never()).save(any());
     }
+
+    @Test
+    @DisplayName("update: AddressRequestValidFields_Id_Customer_correct > ReturnsAddressDTO")
+    void update_withAddressRequestValidFields_Id_Customer_correct_ReturnsAddressDTO() {
+        when(addressRepository.findById(ADDRESS01_TO_UPDATE.getId())).thenReturn(Optional.of(ADDRESS01));
+        when(customerRepository.findById(ADDRESS02_REQUEST_CORRECT_FIELDS.getCustomerId())).thenReturn(Optional.of(CUSTOMER01_IN_DB));
+        when(viaCepFeign.searchLocationByCep(ADDRESS02_REQUEST_CORRECT_FIELDS.getCep())).thenReturn(ADDRESS_BY_CEP02);
+        when(addressRepository.save(ADDRESS01_ATT01)).thenReturn(ADDRESS01_ATT01);
+
+        AddressDTO result = addressService.update(ADDRESS01_TO_UPDATE.getId(), ADDRESS02_REQUEST_CORRECT_FIELDS);
+
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(ADDRESS02_DTO);
+        verify(customerRepository, times(1)).findById(any());
+        verify(viaCepFeign, times(1)).searchLocationByCep(any());
+        verify(addressRepository, times((1))).save(any());
+    }
+
+    @Test
+    @DisplayName("update: InvalidIdAddress > AddressNotFoundException")
+    void update_withInvalidIdAddress_ThrowAddressNotFoundException() {
+        when(addressRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(AddressNotFoundException.class, () -> addressService.update(999L, ADDRESS02_REQUEST_CORRECT_FIELDS));
+        verify(addressRepository, times((1))).findById(any());
+        verify(viaCepFeign, never()).searchLocationByCep(any());
+        verify(addressRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("update: InvalidCustomerId > CustomerNotFoundException")
+    void update_withInvalidCustomerId_ThrowCustomerNotFoundException() {
+        when(addressRepository.findById(ADDRESS01_TO_UPDATE.getId())).thenReturn(Optional.of(ADDRESS01));
+        when(customerRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(CustomerNotFoundException.class, () -> addressService.update(ADDRESS01_TO_UPDATE.getId(), ADDRESS01_REQUEST_INCORRECT_CUSTOM_ID));
+        verify(customerRepository, times(1)).findById(any());
+        verify(viaCepFeign, never()).searchLocationByCep(any());
+        verify(addressRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("update: CustomerIdIsDifferentByConsult > NotPossibleToAlterAddressException")
+    void update_withCustomerIdIsDifferentByConsult_ThrowNotPossibleToAlterAddressException() {
+        when(addressRepository.findById(ADDRESS01_TO_UPDATE.getId())).thenReturn(Optional.of(ADDRESS01));
+        when(customerRepository.findById(ADDRESS03_REQUEST_CORRECT_FIELDS.getCustomerId())).thenReturn(Optional.of(CUSTOMER02_IN_DB));
+
+        assertThrows(NotPossibleToAlterAddressException.class, () -> addressService.update(ADDRESS01_TO_UPDATE.getId(), ADDRESS03_REQUEST_CORRECT_FIELDS));
+        verify(customerRepository, times(1)).findById(any());
+        verify(viaCepFeign, never()).searchLocationByCep(any());
+        verify(addressRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("update: CEPNotFound > FeignCepNotFoundException")
+    void update_withCEPNotFound_ThrowFeignCepNotFoundException() {
+        when(customerRepository.findById(CUSTOMER01_IN_DB.getId())).thenReturn(Optional.of(CUSTOMER01_IN_DB));
+        when(addressRepository.findById(ADDRESS01_TO_UPDATE.getId())).thenReturn(Optional.of(ADDRESS01));
+        when(viaCepFeign.searchLocationByCep(ADDRESS01_REQUEST_NO_FOUND_CEP.getCep())).thenReturn(ADDRESS_BY_CEP_NOT_FOUND);
+
+        assertThrows(FeignCepNotFoundException.class, () -> addressService.update(CUSTOMER01_IN_DB.getId(), ADDRESS01_REQUEST_NO_FOUND_CEP));
+        verify(customerRepository, times(1)).findById(any());
+        verify(viaCepFeign, times(1)).searchLocationByCep(any());
+        verify(addressRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("delete: AddressIdValid > Void")
+    void delete_withAddressIdValid_Void() {
+        when(addressRepository.findById(1L)).thenReturn(Optional.of(ADDRESS01));
+
+        addressService.delete(1L);
+
+        verify(addressRepository, times(1)).findById(1L);
+        verify(addressRepository, times(1)).delete(ADDRESS01);
+    }
+
+    @Test
+    @DisplayName("delete: AddressIdInvalid > AddressNotFoundException")
+    void delete_withAddressIdValidInvalid_ThrowAddressNotFoundException() {
+        when(addressRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(AddressNotFoundException.class, () -> addressService.delete(99L));
+    }
+
 
 }

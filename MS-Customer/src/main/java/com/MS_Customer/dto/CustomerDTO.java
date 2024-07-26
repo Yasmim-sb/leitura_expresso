@@ -1,8 +1,8 @@
 package com.MS_Customer.dto;
 
 import com.MS_Customer.dto.response.AddressResponse;
+import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.enums.SexEnum;
-//import com.MS_Customer.validation.ValidYear;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +32,11 @@ public class CustomerDTO {
     private String password;
 
     private boolean active = true;
-
+    
     private List<AddressResponse> addressList;
 
+    private CustomerRole role;
+
+    public CustomerDTO(Long id, String firstName, String lastName, SexEnum sex, String cpf, LocalDate birthdate, String email, String password, boolean active, List<AddressResponse> addressResponse) {
+    }
 }

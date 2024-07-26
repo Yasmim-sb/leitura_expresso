@@ -30,7 +30,7 @@ public class InstantiationAddress implements CommandLineRunner {
         .firstName("Raimundo")
         .lastName("Silva")
         .sex(SexEnum.MASCULINO)
-        .cpf("444.666.88895")
+        .cpf("444.666.888-95")
         .birthdate(LocalDate.of(1998, 10, 11 ))
         .email("r@mail.com")
         .password("123264654")

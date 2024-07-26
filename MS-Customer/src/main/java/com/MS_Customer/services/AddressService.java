@@ -7,8 +7,10 @@ import com.MS_Customer.dto.CustomerDTO;
 import com.MS_Customer.dto.response.AddressResponse;
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
+import com.MS_Customer.exceptions.customExceptions.AddressNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.FeignCepNotFoundException;
+import com.MS_Customer.exceptions.customExceptions.NotPossibleToAlterAddressException;
 import com.MS_Customer.repositories.AddressRepository;
 import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.request.AddressRequest;
@@ -59,6 +61,52 @@ public class AddressService {
         AddressByCep addressByCep = viaCepFeign.searchLocationByCep(cep);
 
         checkCep(addressByCep.getErro().equalsIgnoreCase("true"));
+
+        return new AddressDTO(salveAddress(request.getCep(), request, getCustomByCustomerId(request.getCustomerId())));
+    }
+
+    public AddressDTO update(Long id, AddressRequest request) {
+        return buildingAddressDTO(id, request);
+    }
+
+    public void delete(Long id){
+        addressRepository.delete(getAddress(id));
+    }
+
+    private AddressDTO buildingAddressDTO(Long id, AddressRequest request) {
+        Address address = getAddress(id);
+        Customer customer = getCustomByCustomerId(request.getCustomerId());
+
+        checkCurrentlyCustomer(address.getCustomerId().getId(), customer.getId());
+
+        return new AddressDTO(updateAddress(searchByCep(request.getCep()), request, customer, address));
+    }
+
+    private Address updateAddress(AddressByCep byCep, AddressRequest request, Customer customer, Address address){
+        return addressRepository.save(new Address(byCep, request, customer, address));
+    }
+
+    private Address getAddress(Long id) {
+        return addressRepository.findById(id).orElseThrow(AddressNotFoundException::new);
+    }
+
+    private void checkCurrentlyCustomer(Long idCustomerByAddress, Long idCustomerBySearch) {
+        if (!idCustomerBySearch.equals(idCustomerByAddress))
+            throw new NotPossibleToAlterAddressException();
+    }
+
+    private Address salveAddress(String byCep, AddressRequest request, Customer customer) {
+        return addressRepository.save(new Address(searchByCep(byCep), request, customer));
+    }
+
+    private Customer getCustomByCustomerId(Long customerId) {
+        return customerRepository.findById(customerId).orElseThrow(CustomerNotFoundException::new);
+    }
+
+    private AddressByCep searchByCep(String cep) {
+        AddressByCep byCep = viaCepFeign.searchLocationByCep(cep);
+
+        checkCep(byCep.getErro().equalsIgnoreCase("true"));
 
         return addressByCep;
     }

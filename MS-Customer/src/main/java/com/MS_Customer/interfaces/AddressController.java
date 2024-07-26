@@ -7,4 +7,9 @@ import org.springframework.http.ResponseEntity;
 public interface AddressController {
 
     ResponseEntity<AddressDTO> createAddress(AddressRequest request);
+
+    ResponseEntity<AddressDTO> updateAddress(Long id, AddressRequest request);
+
+    ResponseEntity<Void> deleteAddress(Long id);
+
 }

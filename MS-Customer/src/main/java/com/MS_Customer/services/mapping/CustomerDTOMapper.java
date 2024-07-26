@@ -6,13 +6,13 @@ import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+
 @AllArgsConstructor
-public class CustomersDTOMapper {
+@Component
+public class CustomerDTOMapper {
 
     private final AddressToAddressResponse addressResponse;
 

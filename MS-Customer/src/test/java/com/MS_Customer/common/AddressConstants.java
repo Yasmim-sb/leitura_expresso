@@ -21,6 +21,24 @@ public class AddressConstants {
     .customerId(1L)
     .build();
 
+    public static AddressRequest ADDRESS02_REQUEST_CORRECT_FIELDS = AddressRequest.builder()
+    .street("Street Test 02")
+    .number("1000")
+    .cep("44600-000")
+    .district("Center")
+    .complement("Complement 02")
+    .customerId(1L)
+    .build();
+
+    public static AddressRequest ADDRESS03_REQUEST_CORRECT_FIELDS = AddressRequest.builder()
+    .street("Street Test 01")
+    .number("12")
+    .cep("01001-000")
+    .district("Center")
+    .complement("Complement test 01")
+    .customerId(2L)
+    .build();
+
     public static AddressRequest ADDRESS01_REQUEST_INCORRECT_CUSTOM_ID = AddressRequest.builder()
     .street("Street Test 01")
     .number("12")
@@ -70,6 +88,19 @@ public class AddressConstants {
     .addressList(null)
     .build();
 
+    public static Customer CUSTOMER02_IN_DB = Customer.builder()
+    .id(2L)
+    .firstName("Maria")
+    .lastName("Souza")
+    .sex(SexEnum.FEMININO)
+    .cpf("778.556.222.78")
+    .birthdate(LocalDate.of(1984, 1, 19))
+    .email("m@email.com")
+    .password("1234567")
+    .active(true)
+    .addressList(null)
+    .build();
+
     public static AddressByCep ADDRESS_BY_CEP01 = AddressByCep.builder()
     .logradouro("Praça da Sé")
     .complemento("lado ímpar")
@@ -77,6 +108,16 @@ public class AddressConstants {
     .localidade("São Paulo")
     .uf(StateUFEnum.SP)
     .cep("01001-000")
+    .erro("false")
+    .build();
+
+    public static AddressByCep ADDRESS_BY_CEP02 = AddressByCep.builder()
+    .logradouro("")
+    .complemento("")
+    .bairro("")
+    .localidade("Ipirá")
+    .uf(StateUFEnum.BA)
+    .cep("44600-000")
     .erro("false")
     .build();
 
@@ -113,6 +154,43 @@ public class AddressConstants {
     .customerId(CUSTOMER01_IN_DB)
     .build();
 
+    public static Address ADDRESS01_TO_UPDATE = Address.builder()
+    .id(ADDRESS01.getId())
+    .state(ADDRESS_BY_CEP02.getUf().getNome())
+    .city(ADDRESS_BY_CEP02.getLocalidade())
+    .district(ADDRESS02_REQUEST_CORRECT_FIELDS.getDistrict())
+    .street(ADDRESS02_REQUEST_CORRECT_FIELDS.getStreet())
+    .number(ADDRESS02_REQUEST_CORRECT_FIELDS.getNumber())
+    .cep(ADDRESS02_REQUEST_CORRECT_FIELDS.getCep())
+    .complement(ADDRESS02_REQUEST_CORRECT_FIELDS.getComplement())
+    .customerId(CUSTOMER01_IN_DB)
+    .build();
+
+
+    public static Address ADDRESS01_ATT01 = Address.builder()
+    .id(ADDRESS01.getId())
+    .state(ADDRESS_BY_CEP02.getUf().getNome())
+    .city(ADDRESS_BY_CEP02.getLocalidade())
+    .district(ADDRESS02_REQUEST_CORRECT_FIELDS.getDistrict())
+    .street(ADDRESS02_REQUEST_CORRECT_FIELDS.getStreet())
+    .number(ADDRESS02_REQUEST_CORRECT_FIELDS.getNumber())
+    .cep(ADDRESS02_REQUEST_CORRECT_FIELDS.getCep())
+    .complement(ADDRESS02_REQUEST_CORRECT_FIELDS.getComplement())
+    .customerId(CUSTOMER01_IN_DB)
+    .build();
+
+    public static Address ADDRESS01_TO_UPDATE_ID_CUSTOMER_INCORRECT = Address.builder()
+    .id(ADDRESS01.getId())
+    .state(ADDRESS_BY_CEP02.getUf().getNome())
+    .city(ADDRESS_BY_CEP02.getLocalidade())
+    .district(ADDRESS02_REQUEST_CORRECT_FIELDS.getDistrict())
+    .street(ADDRESS02_REQUEST_CORRECT_FIELDS.getStreet())
+    .number(ADDRESS02_REQUEST_CORRECT_FIELDS.getNumber())
+    .cep(ADDRESS02_REQUEST_CORRECT_FIELDS.getCep())
+    .complement(ADDRESS02_REQUEST_CORRECT_FIELDS.getComplement())
+    .customerId(CUSTOMER01_IN_DB)
+    .build();
+
     public static AddressDTO ADDRESS01_DTO = AddressDTO.builder()
     .id(1L)
     .state(ADDRESS_BY_CEP01.getUf().getNome())
@@ -125,5 +203,16 @@ public class AddressConstants {
     .customerId(CUSTOMER01_IN_DB)
     .build();
 
+    public static AddressDTO ADDRESS02_DTO = AddressDTO.builder()
+    .id(ADDRESS01.getId())
+    .state(ADDRESS_BY_CEP02.getUf().getNome())
+    .city(ADDRESS_BY_CEP02.getLocalidade())
+    .district(ADDRESS02_REQUEST_CORRECT_FIELDS.getDistrict())
+    .street(ADDRESS02_REQUEST_CORRECT_FIELDS.getStreet())
+    .number(ADDRESS02_REQUEST_CORRECT_FIELDS.getNumber())
+    .cep(ADDRESS02_REQUEST_CORRECT_FIELDS.getCep())
+    .complement(ADDRESS02_REQUEST_CORRECT_FIELDS.getComplement())
+    .customerId(ADDRESS02_REQUEST_CORRECT_FIELDS.getCustomerId())
+    .build();
 
 }
