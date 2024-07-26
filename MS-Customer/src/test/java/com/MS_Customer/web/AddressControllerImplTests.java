@@ -50,7 +50,7 @@ class AddressControllerImplTests {
     }
 
     @Test
-    @DisplayName("create: InValidFields > MethodArgumentNotValidException: Status_400")
+    @DisplayName("create: InvalidFields > MethodArgumentNotValidException: Status_400")
     void create_withInValidFields_ThrowMethodArgumentNotValidException_Status400() throws Exception{
 
         mockMvc.perform(post("/v1/address")
@@ -59,6 +59,29 @@ class AddressControllerImplTests {
         .andExpect(status().isBadRequest())
         .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
     }
+
+    @Test
+    @DisplayName("update: validFields > ReturnAddressDTO : Status_200")
+    void update_withValidFields_ReturnAddressDTO_Status200() throws Exception {
+        when(addressService.update(2L, ADDRESS01_REQUEST_CORRECT_FIELDS)).thenReturn(ADDRESS01_DTO);
+
+        mockMvc.perform(put("/v1/address/{id}", 2L)
+        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_CORRECT_FIELDS))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("update: InvalidFields > ThrowMethodArgumentNotValidException : Status_400")
+    void update_withInvalidFields_ThrowMethodArgumentNotValidException_Status400() throws Exception {
+
+        mockMvc.perform(put("/v1/address/{id}", 2L)
+        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_INVALID_FIELDS))
+        .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest())
+        .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
+    }
+
 
     @Test
     @DisplayName("delete: AddressIdValid > ReturnsVoid : Status_204")

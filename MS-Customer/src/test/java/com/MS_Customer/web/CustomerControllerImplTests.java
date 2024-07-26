@@ -47,7 +47,7 @@ class CustomerControllerImplTests {
     }
 
     @Test
-    @DisplayName("changePasswordCustomer: ValidPassword > Void : Status_400")
+    @DisplayName("changePasswordCustomer: InvalidPassword > MethodArgumentNotValidException : Status_400")
     void changePasswordCustomer_withInvalidPassword_ThrowsMethodArgumentNotValidException_Status400() throws Exception{
 
         mockMvc.perform(put("/v1/customers/{id}/password", 1L)
