@@ -16,7 +16,7 @@ public class CustomerDTOMapper {
 
     private final AddressToAddressResponse addressResponse;
 
-    public CustomerDTO createCustomerDTO(Customer customer){
+    public CustomerDTO createCustomerDTO(Customer customer) {
         var customerDTO = new CustomerDTO();
 
         customerDTO.setId(customer.getId());
@@ -31,7 +31,7 @@ public class CustomerDTOMapper {
         List<Address> addressList = customer.getAddressList();
 
         List<AddressResponse> addressResponseList = addressList.stream()
-                .map(addressResponse::createAddressResponse)
+                .map(addressResponse::createAddressResponse) // Utilize addressMapper em vez de addressResponse
                 .collect(Collectors.toList());
 
         customerDTO.setAddressList(addressResponseList);

@@ -25,9 +25,9 @@ public class CustomerService {
 
     public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
 
-        if (customerRepository.findByEmail(customerDTO.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().build();
-        }
+//        if (customerRepository.findByEmail(customerDTO.getEmail()).isPresent()) {
+//            return ResponseEntity.badRequest().build();
+//        }
 
         String encryptedPassword = passwordEncoder.encode(customerDTO.getPassword());
         customerDTO.setPassword(encryptedPassword);
@@ -75,7 +75,8 @@ public class CustomerService {
     }
 
     public void updatePassword(Long id, CustomerNewPasswordRequest newPasswordDTO){
-        changePasswordFromCustomer(getCustomerById(id), newPasswordDTO);
+        var customer = customerMapper.createCustomer(getCustomerById(id));
+        changePasswordFromCustomer(customer, newPasswordDTO);
     }
 
     private void changePasswordFromCustomer(Customer customer, CustomerNewPasswordRequest newPasswordDTO){

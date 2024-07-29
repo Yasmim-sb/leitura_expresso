@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -32,8 +33,8 @@ public class CustomerDTO {
     private String password;
 
     private boolean active = true;
-    
-    private List<AddressResponse> addressList;
+
+    private List<AddressResponse> addressList = new ArrayList<>();
 
     private CustomerRole role;
 
