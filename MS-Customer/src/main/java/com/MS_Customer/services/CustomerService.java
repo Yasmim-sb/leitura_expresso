@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
@@ -25,13 +27,6 @@ public class CustomerService {
 
     public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
 
-//        if (customerRepository.findByEmail(customerDTO.getEmail()).isPresent()) {
-//            return ResponseEntity.badRequest().build();
-//        }
-
-        String encryptedPassword = passwordEncoder.encode(customerDTO.getPassword());
-        customerDTO.setPassword(encryptedPassword);
-
         if (customerDTO.getFirstName().isEmpty() ||
                 customerDTO.getLastName().isEmpty() ||
                 customerDTO.getSex() == null ||
@@ -40,13 +35,26 @@ public class CustomerService {
                 customerDTO.getEmail().isEmpty() ||
                 customerDTO.getPassword().isEmpty()) {
             throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
-        } else {
-            var customer = customerMapper.createCustomer(customerDTO);
-            customerRepository.save(customer);
-
-            var response = customersDTOMapper.createCustomerDTO(customer);
-            return ResponseEntity.ok(response);
         }
+
+        Optional<Customer> existingCustomerByEmail = customerRepository.findByEmail(customerDTO.getEmail());
+        if (existingCustomerByEmail.isPresent()) {
+            throw new IllegalArgumentException("Email já em uso.");
+        }
+
+        Optional<Customer> existingCustomerByCpf = customerRepository.findByCpf(customerDTO.getCpf());
+        if (existingCustomerByCpf.isPresent()){
+            throw new IllegalArgumentException("CPF está em uso.");
+        }
+
+        String encryptedPassword = passwordEncoder.encode(customerDTO.getPassword());
+        customerDTO.setPassword(encryptedPassword);
+
+        var customer = customerMapper.createCustomer(customerDTO);
+        customerRepository.save(customer);
+
+        var response = customersDTOMapper.createCustomerDTO(customer);
+        return ResponseEntity.ok(response);
     }
 
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
