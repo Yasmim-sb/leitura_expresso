@@ -1,13 +1,11 @@
 package com.MS_Customer.services.mapping;
 
 import com.MS_Customer.dto.CustomerDTO;
-import com.MS_Customer.dto.response.AddressResponse;
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
