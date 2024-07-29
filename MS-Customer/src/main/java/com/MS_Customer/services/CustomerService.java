@@ -1,6 +1,7 @@
 package com.MS_Customer.services;
 
 import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.exceptions.customExceptions.ConflictException;
 import com.MS_Customer.request.CustomerNewPasswordRequest;
 import com.MS_Customer.entities.Customer;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFound;
@@ -10,6 +11,7 @@ import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.services.mapping.CustomerMapper;
 import com.MS_Customer.services.mapping.CustomerDTOMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,8 +27,7 @@ public class CustomerService {
     private final CustomerDTOMapper customersDTOMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws IllegalArgumentException {
-
+    public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws BadRequestException, ConflictException {
         if (customerDTO.getFirstName().isEmpty() ||
                 customerDTO.getLastName().isEmpty() ||
                 customerDTO.getSex() == null ||
@@ -34,17 +35,17 @@ public class CustomerService {
                 customerDTO.getBirthdate() == null ||
                 customerDTO.getEmail().isEmpty() ||
                 customerDTO.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("Um ou mais campos obrigatórios estão vazios ou nulos.");
+            throw new BadRequestException("Um ou mais campos obrigatórios estão vazios ou nulos.");
         }
 
         Optional<Customer> existingCustomerByEmail = customerRepository.findByEmail(customerDTO.getEmail());
         if (existingCustomerByEmail.isPresent()) {
-            throw new IllegalArgumentException("Email já em uso.");
+            throw new ConflictException("Email já em uso.");
         }
 
         Optional<Customer> existingCustomerByCpf = customerRepository.findByCpf(customerDTO.getCpf());
-        if (existingCustomerByCpf.isPresent()){
-            throw new IllegalArgumentException("CPF está em uso.");
+        if (existingCustomerByCpf.isPresent()) {
+            throw new ConflictException("CPF já em uso.");
         }
 
         String encryptedPassword = passwordEncoder.encode(customerDTO.getPassword());
@@ -56,6 +57,7 @@ public class CustomerService {
         var response = customersDTOMapper.createCustomerDTO(customer);
         return ResponseEntity.ok(response);
     }
+
 
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
         var customerExisting = customerRepository.findById(id)
