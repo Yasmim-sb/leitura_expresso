@@ -1,15 +1,22 @@
 package com.MS_Customer.services.mapping;
 
 import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.dto.response.AddressResponse;
+import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import java.util.Optional;
 
+@AllArgsConstructor
 @Component
 public class CustomerDTOMapper {
 
-    public CustomerDTO createCustomerDTO(Customer customer){
+    private final AddressToAddressResponse addressResponse;
+
+    public CustomerDTO createCustomerDTO(Customer customer) {
         var customerDTO = new CustomerDTO();
 
         customerDTO.setId(customer.getId());
@@ -21,7 +28,14 @@ public class CustomerDTOMapper {
         customerDTO.setSex(customer.getSex());
         customerDTO.setBirthdate(customer.getBirthdate());
 
+        List<Address> addressList = customer.getAddressList();
+
+        List<AddressResponse> addressResponseList = addressList.stream()
+                .map(addressResponse::createAddressResponse) // Utilize addressMapper em vez de addressResponse
+                .collect(Collectors.toList());
+
+        customerDTO.setAddressList(addressResponseList);
+
         return customerDTO;
     }
-
 }

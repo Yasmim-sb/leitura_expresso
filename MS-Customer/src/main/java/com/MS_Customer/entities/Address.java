@@ -2,6 +2,7 @@ package com.MS_Customer.entities;
 
 import com.MS_Customer.client.models.AddressByCep;
 import com.MS_Customer.request.AddressRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -43,6 +44,7 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     @ToString.Exclude
+    @JsonIgnore
     private Customer customerId;
 
     public Address(AddressByCep byCep, AddressRequest request, Customer customer){
@@ -55,6 +57,8 @@ public class Address {
         this.complement = request.getComplement();
         this.customerId = customer;
     }
+
+    public Address(Long id, String state, String city, String district, String street, String number, String cep, String complement) {}
 
     public Address(AddressByCep byCep, AddressRequest request, Customer customer, Address addressInDb){
         this.id = addressInDb.getId();
