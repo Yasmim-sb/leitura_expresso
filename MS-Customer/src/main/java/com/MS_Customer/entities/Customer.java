@@ -1,12 +1,10 @@
 package com.MS_Customer.entities;
 
+import com.MS_Customer.entities.validate.ValidAge;
 import com.MS_Customer.enums.SexEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +37,8 @@ public class Customer {
     message = "CPF must be in the format 000.000.000-00")
     private String cpf;
 
+    @NotNull(message = "A data de nascimento não pode ser nula.")
+    @ValidAge
     private LocalDate birthdate;
 
     @Column(unique = true)
