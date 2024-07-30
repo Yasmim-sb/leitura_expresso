@@ -4,6 +4,7 @@ import com.MS_Customer.dto.response.AddressResponse;
 import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.enums.SexEnum;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CustomerDTO {
 
     private Long id;
