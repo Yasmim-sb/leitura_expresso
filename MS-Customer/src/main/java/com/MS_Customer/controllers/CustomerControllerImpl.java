@@ -26,14 +26,15 @@ public class CustomerControllerImpl implements CustomerController {
 
     @PutMapping("/customers/{id}")
     public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerDTO customerDTO){
-        customerService.updateCustomer(id, customerDTO);
-        return ResponseEntity.ok().build();
+        var customerS = customerService.updateCustomer(id, customerDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(customerS);
     }
     @GetMapping("/customers/{id}")
-    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long id) {
-        CustomerDTO customerDTO = customerService.getCustomer(id).getBody();
-        return new ResponseEntity<>(customerDTO, HttpStatus.OK);
+    public CustomerDTO getCustomer(@PathVariable Long id) {
+        CustomerDTO customerDTO = customerService.getCustomerById(id);
+        return new ResponseEntity<>(customerDTO, HttpStatus.OK).getBody();
     }
+  
 // Comentando pois é um codigo que sera mexido posteriormente
 //    @Override
 //    @PutMapping("/customers/{id}/password")
@@ -41,4 +42,9 @@ public class CustomerControllerImpl implements CustomerController {
 //        customerService.updatePassword(id, newPasswordRequest);
 //        return ResponseEntity.noContent().build();
 //    }
+    @PutMapping("/customers/{id}/password")
+    public ResponseEntity<Void> changePasswordCustomer(@PathVariable Long id, @RequestBody @Valid CustomerNewPasswordRequest newPasswordRequest) {
+        customerService.updatePassword(id, newPasswordRequest);
+        return ResponseEntity.noContent().build();
+    }
 }

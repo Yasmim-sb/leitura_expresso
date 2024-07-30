@@ -3,6 +3,8 @@ package com.MS_Customer.services;
 import com.MS_Customer.client.ViaCepFeign;
 import com.MS_Customer.client.models.AddressByCep;
 import com.MS_Customer.dto.AddressDTO;
+import com.MS_Customer.dto.CustomerDTO;
+import com.MS_Customer.dto.response.AddressResponse;
 import com.MS_Customer.entities.Address;
 import com.MS_Customer.entities.Customer;
 import com.MS_Customer.exceptions.customExceptions.AddressNotFoundException;
@@ -14,6 +16,9 @@ import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.request.AddressRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -78,5 +83,25 @@ public class AddressService {
     private void checkCep(boolean check) {
         if (check)
             throw new FeignCepNotFoundException();
+    }
+
+    public CustomerDTO convertToCustomerDTO(Customer customer) {
+        List<AddressDTO> addressDTOList = customer.getAddressList().stream()
+        .map(AddressDTO::new)
+        .collect(Collectors.toList());
+
+        List<AddressResponse> AddressResponse = List.of();
+        return new CustomerDTO(
+        customer.getId(),
+        customer.getFirstName(),
+        customer.getLastName(),
+        customer.getSex(),
+        customer.getCpf(),
+        customer.getBirthdate(),
+        customer.getEmail(),
+        customer.getPassword(),
+        customer.isActive(),
+        AddressResponse
+        );
     }
 }

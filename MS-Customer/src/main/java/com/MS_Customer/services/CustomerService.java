@@ -22,6 +22,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+    private final AddressService addressService;
     private final CustomerDTOMapper customersDTOMapper;
     private final PasswordEncoder passwordEncoder;
 
@@ -64,21 +65,17 @@ public class CustomerService {
         if (customerDTO.getPassword() != null){
             throw new NotAllowedException();
         }
-        customerExisting.setFirstName(customerDTO.getFirstName());
-        customerExisting.setLastName(customerDTO.getLastName());
-        customerExisting.setCpf(customerDTO.getCpf());
-        customerExisting.setBirthdate(customerDTO.getBirthdate());
-        customerExisting.setEmail(customerDTO.getEmail());
-        customerExisting.setSex(customerDTO.getSex());
-        customerExisting.setActive(customerDTO.isActive());
+        NullBeanUtils.copyNonNullProperties(customerDTO, customerExisting);
 
         return customersDTOMapper.createCustomerDTO(customerRepository.save(customerExisting));
     }
+
 
     public ResponseEntity<CustomerDTO> getCustomer(Long id) {
         var customer = customerRepository.getReferenceById(id);
         return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
     }
+
 
     //Comentei pois são endpoints que serão criados ou mexidos posteriormente
 //    public void updatePassword(Long id, CustomerNewPasswordRequest newPasswordDTO){
@@ -88,6 +85,7 @@ public class CustomerService {
 //    private Customer getCustomerById(Long id) {
 //        return customerRepository.findById(id).orElseThrow(NotAllowedExceptionException::new);
 //    }
+
 
     private void changePasswordFromCustomer(Customer customer, CustomerNewPasswordRequest newPasswordDTO){
         customer.setPassword(newPasswordDTO.getNewPassword());
