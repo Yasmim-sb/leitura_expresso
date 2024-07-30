@@ -1,4 +1,4 @@
-package com.MS_Customer.exceptions.build;
+package com.MS_Customer.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

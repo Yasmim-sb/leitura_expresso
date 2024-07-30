@@ -1,6 +1,6 @@
 package com.MS_Customer.exceptions.build;
 
-import com.MS_Customer.exceptions.customExceptions.CustomerNotFound;
+import com.MS_Customer.enums.ErrorCodeEnum;
 import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolation;
@@ -38,11 +38,6 @@ public class Problem {
     }
 
     public Problem(ErrorCodeEnum errorCode, NotAllowedException exception){
-        this.code = Integer.parseInt(exception.getMessageErrorCode());
-        this.status = errorCode.name();
-        this.message = errorCode.getMessage();
-    }
-    public Problem(ErrorCodeEnum errorCode, CustomerNotFound exception){
         this.code = Integer.parseInt(exception.getMessageErrorCode());
         this.status = errorCode.name();
         this.message = errorCode.getMessage();

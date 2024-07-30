@@ -1,15 +1,13 @@
 package com.MS_Customer.services;
 
 import com.MS_Customer.dto.CustomerDTO;
-import com.MS_Customer.exceptions.customExceptions.ConflictException;
-import com.MS_Customer.request.CustomerNewPasswordRequest;
 import com.MS_Customer.entities.Customer;
-import com.MS_Customer.exceptions.customExceptions.CustomerNotFound;
-import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
+import com.MS_Customer.exceptions.customExceptions.ConflictException;
 import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
 import com.MS_Customer.repositories.CustomerRepository;
-import com.MS_Customer.services.mapping.CustomerMapper;
+import com.MS_Customer.request.CustomerNewPasswordRequest;
 import com.MS_Customer.services.mapping.CustomerDTOMapper;
+import com.MS_Customer.services.mapping.CustomerMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +59,7 @@ public class CustomerService {
 
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
         var customerExisting = customerRepository.findById(id)
-        .orElseThrow(CustomerNotFound::new);
+        .orElseThrow(NotAllowedException::new);
 
         if (customerDTO.getPassword() != null){
             throw new NotAllowedException();
@@ -82,13 +80,14 @@ public class CustomerService {
         return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
     }
 
-    public void updatePassword(Long id, CustomerNewPasswordRequest newPasswordDTO){
-        changePasswordFromCustomer(getCustomerById(id), newPasswordDTO);
-    }
-
-    private Customer getCustomerById(Long id) {
-        return customerRepository.findById(id).orElseThrow(CustomerNotFoundException::new);
-    }
+    //Comentei pois são endpoints que serão criados ou mexidos posteriormente
+//    public void updatePassword(Long id, CustomerNewPasswordRequest newPasswordDTO){
+//        changePasswordFromCustomer(getCustomerById(id), newPasswordDTO);
+//    }
+//
+//    private Customer getCustomerById(Long id) {
+//        return customerRepository.findById(id).orElseThrow(NotAllowedExceptionException::new);
+//    }
 
     private void changePasswordFromCustomer(Customer customer, CustomerNewPasswordRequest newPasswordDTO){
         customer.setPassword(newPasswordDTO.getNewPassword());

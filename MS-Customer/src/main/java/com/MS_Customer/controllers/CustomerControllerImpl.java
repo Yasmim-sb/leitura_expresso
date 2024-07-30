@@ -2,7 +2,6 @@ package com.MS_Customer.controllers;
 
 import com.MS_Customer.dto.CustomerDTO;
 import com.MS_Customer.exceptions.customExceptions.ConflictException;
-import com.MS_Customer.request.CustomerNewPasswordRequest;
 import com.MS_Customer.interfaces.CustomerController;
 import com.MS_Customer.services.CustomerService;
 import jakarta.validation.Valid;
@@ -35,11 +34,11 @@ public class CustomerControllerImpl implements CustomerController {
         CustomerDTO customerDTO = customerService.getCustomer(id).getBody();
         return new ResponseEntity<>(customerDTO, HttpStatus.OK);
     }
-
-    @Override
-    @PutMapping("/customers/{id}/password")
-    public ResponseEntity<Void> changePasswordCustomer(@PathVariable Long id, @RequestBody @Valid CustomerNewPasswordRequest newPasswordRequest) {
-        customerService.updatePassword(id, newPasswordRequest);
-        return ResponseEntity.noContent().build();
-    }
+// Comentando pois é um codigo que sera mexido posteriormente
+//    @Override
+//    @PutMapping("/customers/{id}/password")
+//    public ResponseEntity<Void> changePasswordCustomer(@PathVariable Long id, @RequestBody @Valid CustomerNewPasswordRequest newPasswordRequest) {
+//        customerService.updatePassword(id, newPasswordRequest);
+//        return ResponseEntity.noContent().build();
+//    }
 }

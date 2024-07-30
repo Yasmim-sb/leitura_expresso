@@ -1,6 +1,6 @@
 package com.MS_Customer.exceptions.customExceptions;
 
-import com.MS_Customer.exceptions.build.ErrorCodeEnum;
+import com.MS_Customer.enums.ErrorCodeEnum;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 

@@ -38,12 +38,6 @@ public class GlobalExceptionsHandler {
         return ResponseEntity.status(ex.getHttpStatus()).body(problem);
     }
 
-    @ExceptionHandler(CustomerNotFound.class)
-    public ResponseEntity<Object> handleCustomerNotFoundException(CustomerNotFound ex) {
-        Problem problem = new Problem(ex.getMessageErrorCode(), ex.getHttpStatus());
-        return ResponseEntity.status(ex.getHttpStatus()).body(problem);
-    }
-
     @ExceptionHandler(NotPossibleToAlterAddressException.class)
     public ResponseEntity<Object> handleNotPossibleAlterAddressException(NotPossibleToAlterAddressException ex) {
         Problem problem = new Problem(ex.getMessageErrorCode(), ex.getHttpStatus());
