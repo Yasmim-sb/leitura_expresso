@@ -5,5 +5,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface CustomerController {
 
-    public ResponseEntity<Void> changePasswordCustomer(Long id, CustomerNewPasswordRequest newPasswordDTO);
+    //public ResponseEntity<Void> changePasswordCustomer(Long id, CustomerNewPasswordRequest newPasswordDTO);
 }

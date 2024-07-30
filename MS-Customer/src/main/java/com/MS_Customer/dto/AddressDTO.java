@@ -1,10 +1,11 @@
 package com.MS_Customer.dto;
 
 import com.MS_Customer.entities.Address;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.MS_Customer.entities.Customer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
@@ -28,9 +29,9 @@ public class AddressDTO {
 
     private String complement;
 
-    private Long customerId;
+    private Customer customerId;
 
-    public AddressDTO(Address address){
+    public AddressDTO(Address address) {
         this.id = address.getId();
         this.state = address.getState();
         this.city = address.getCity();
@@ -39,6 +40,7 @@ public class AddressDTO {
         this.number = address.getNumber();
         this.cep = address.getCep();
         this.complement = address.getComplement();
-        this.customerId = address.getCustomerId().getId();
     }
+
+
 }
