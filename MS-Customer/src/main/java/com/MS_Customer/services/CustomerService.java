@@ -71,9 +71,9 @@ public class CustomerService {
     }
 
 
-    public ResponseEntity<CustomerDTO> getCustomer(Long id) {
+    public CustomerDTO getCustomer(Long id) {
         var customer = customerRepository.getReferenceById(id);
-        return ResponseEntity.ok(customersDTOMapper.createCustomerDTO(customer));
+        return customersDTOMapper.createCustomerDTO(customer);
     }
 
 
