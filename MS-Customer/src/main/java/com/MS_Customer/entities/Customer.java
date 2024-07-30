@@ -9,8 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -18,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Customer {
+public class Customer implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +37,7 @@ public class Customer {
 
     @Column(unique = true)
     @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}",
-    message = "CPF must be in the format 000.000.000-00")
+            message = "CPF must be in the format 000.000.000-00")
     private String cpf;
 
     @NotNull(message = "A data de nascimento não pode ser nula.")
@@ -55,5 +58,35 @@ public class Customer {
     @OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Address> addressList;
-    
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;  // O email será usado como o nome de usuário.
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return active;
+    }
+
 }
