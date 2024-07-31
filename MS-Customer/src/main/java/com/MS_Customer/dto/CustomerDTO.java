@@ -1,23 +1,21 @@
 package com.MS_Customer.dto;
 
+import com.MS_Customer.dto.response.AddressResponse;
+import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.enums.SexEnum;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CustomerDTO {
 
     private Long id;
@@ -37,4 +35,11 @@ public class CustomerDTO {
     private String password;
 
     private boolean active = true;
+
+    private List<AddressResponse> addressList = new ArrayList<>();
+
+    private CustomerRole role;
+
+    public CustomerDTO(Long id, String firstName, String lastName, SexEnum sex, String cpf, LocalDate birthdate, String email, String password, boolean active, List<AddressResponse> addressResponse) {
+    }
 }
