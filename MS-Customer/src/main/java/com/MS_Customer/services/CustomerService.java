@@ -3,11 +3,13 @@ package com.MS_Customer.services;
 import com.MS_Customer.dto.CustomerDTO;
 import com.MS_Customer.entities.Customer;
 import com.MS_Customer.exceptions.customExceptions.ConflictException;
+import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
 import com.MS_Customer.repositories.CustomerRepository;
 import com.MS_Customer.request.CustomerNewPasswordRequest;
 import com.MS_Customer.services.mapping.CustomerDTOMapper;
 import com.MS_Customer.services.mapping.CustomerMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
@@ -58,13 +60,14 @@ public class CustomerService {
     }
 
 
-    public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
+    public CustomerDTO updateCustomer(Long id, @Valid CustomerDTO customerDTO){
         var customerExisting = customerRepository.findById(id)
-        .orElseThrow(NotAllowedException::new);
+        .orElseThrow(CustomerNotFoundException::new);
 
         if (customerDTO.getPassword() != null){
             throw new NotAllowedException();
         }
+
         NullBeanUtils.copyNonNullProperties(customerDTO, customerExisting);
 
         return customersDTOMapper.createCustomerDTO(customerRepository.save(customerExisting));

@@ -1,8 +1,10 @@
 package com.MS_Customer.dto;
 
 import com.MS_Customer.dto.response.AddressResponse;
+import com.MS_Customer.entities.validate.ValidAge;
 import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.enums.SexEnum;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +30,8 @@ public class CustomerDTO {
 
     private String cpf;
 
+    @NotNull(message = "A data de nascimento não pode ser nula.")
+    @ValidAge
     private LocalDate birthdate;
 
     private String email;

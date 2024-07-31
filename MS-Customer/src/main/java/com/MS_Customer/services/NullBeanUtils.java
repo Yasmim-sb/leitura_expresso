@@ -18,7 +18,7 @@ public class NullBeanUtils {
         Set<String> nullNames = new HashSet<>();
         for (Field field : allFields) {
             boolean originalAccessible = field.isAccessible();
-            field.setAccessible(true);
+            field.setAccessible(true); //modificando a acessibilidade
             try {
                 if (field.get(source) == null) {
                     nullNames.add(field.getName());
@@ -26,7 +26,7 @@ public class NullBeanUtils {
             } catch (IllegalAccessException e) {
                 throw new BeansException("Could not acess field", e) {};
             } finally {
-                field.setAccessible(originalAccessible);
+                field.setAccessible(originalAccessible); //restaurar o estado original
             }
         }
         return nullNames.toArray(new String[0]);

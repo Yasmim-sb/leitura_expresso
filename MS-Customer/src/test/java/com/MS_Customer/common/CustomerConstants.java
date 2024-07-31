@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public class CustomerConstants {
 
-    public static Customer CUSTOMER01_IN_DB = Customer.builder()
+    public static CustomerDTO CUSTOMERDTO01_IN_DB = CustomerDTO.builder()
     .id(1L)
     .firstName("Pedro")
     .lastName("Silva")
@@ -22,7 +22,57 @@ public class CustomerConstants {
     .addressList(null)
     .build();
 
-    public static Customer CUSTOMER02_IN_DB = Customer.builder()
+    public static Customer CUSTOMER_WITH_PASSWORD = Customer.builder()
+            .id(1L)
+            .firstName("Pedro")
+            .lastName("Silva")
+            .sex(SexEnum.MASCULINO)
+            .cpf("117.885.222.96")
+            .birthdate(LocalDate.of(1980, 1, 17))
+            .email("pedro@email.com")
+            .password("1234567")
+            .active(true)
+            .addressList(null)
+            .build();
+
+    //apagar e substituir
+    public static CustomerDTO CUSTOMERDTO_WITH_PASSWORD = CustomerDTO.builder()
+            .id(1L)
+            .firstName("Pedro")
+            .lastName("Silva")
+            .sex(SexEnum.MASCULINO)
+            .cpf("117.885.222.96")
+            .birthdate(LocalDate.of(1980, 1, 17))
+            .email("pedro@email.com")
+            .password("1234567")
+            .active(true)
+            .addressList(null)
+            .build();
+
+    public static CustomerDTO CUSTOMER_WITH_BIRTHDATE_INVALID = CustomerDTO.builder()
+            .id(1L)
+            .firstName("Pedro")
+            .lastName("Silva")
+            .sex(SexEnum.MASCULINO)
+            .cpf("117.885.222.74")
+            .birthdate(LocalDate.of(2009, 1, 17))
+            .email("pedro@email.com")
+            .active(true)
+            .addressList(null)
+            .build();
+
+    public static Customer CUSTOMER_WITHOUT_PASSWORD = Customer.builder()
+            .id(1L)
+            .firstName("savana")
+            .lastName("Silva")
+            .sex(SexEnum.FEMININO)
+            .cpf("117.885.222.96")
+            .birthdate(LocalDate.of(2009, 1, 17))
+            .email("pedro@email.com")
+            .active(true)
+            .addressList(null)
+            .build();
+    public static Customer CUSTOMER_INVALID_ID = Customer.builder()
             .id(-1L)
             .firstName("Pedro")
             .lastName("Silva")
@@ -34,7 +84,7 @@ public class CustomerConstants {
             .addressList(null)
             .build();
 
-    public static CustomerDTO CUSTOMER02 = CustomerDTO.builder()
+    public static CustomerDTO CUSTOMERDTO_INVALID_ID = CustomerDTO.builder()
             .id(-1L)
             .firstName("Pedro")
             .lastName("Silva")
