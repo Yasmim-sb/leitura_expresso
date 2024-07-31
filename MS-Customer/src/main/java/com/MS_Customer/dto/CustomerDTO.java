@@ -1,6 +1,7 @@
 package com.MS_Customer.dto;
 
 import com.MS_Customer.dto.response.AddressResponse;
+import com.MS_Customer.entities.validate.ValidAge;
 import com.MS_Customer.enums.CustomerRole;
 import com.MS_Customer.enums.SexEnum;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ public class CustomerDTO {
 
     private String cpf;
 
+    @ValidAge
     private LocalDate birthdate;
 
     private String email;

@@ -1,6 +1,8 @@
 package com.MS_Customer.exceptions.build;
 
 import com.MS_Customer.enums.ErrorCodeEnum;
+import com.MS_Customer.exceptions.customExceptions.BadRequestException;
+import com.MS_Customer.exceptions.customExceptions.ConflictException;
 import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolation;
@@ -54,10 +56,23 @@ public class Problem {
         this.status = HttpStatus.BAD_REQUEST.name();
         this.message = Arrays.toString(argumentNotValidException.getDetailMessageArguments());
     }
+
     public Problem(FeignException feignException){
         this.code = HttpStatus.BAD_REQUEST.value();
         this.status = HttpStatus.BAD_REQUEST.name();
         this.message = feignException.getCause().toString();
+    }
+
+    public Problem(BadRequestException badRequestException){
+        this.code = HttpStatus.BAD_REQUEST.value();
+        this.status = HttpStatus.BAD_REQUEST.name();
+        this.message = badRequestException.getMessage();
+    }
+
+    public Problem(ConflictException conflictException){
+        this.code = HttpStatus.CONFLICT.value();
+        this.status = HttpStatus.CONFLICT.name();
+        this.message = conflictException.getMessage();
     }
 
     private String formatViolationMessages(Set<ConstraintViolation<?>> violations) {

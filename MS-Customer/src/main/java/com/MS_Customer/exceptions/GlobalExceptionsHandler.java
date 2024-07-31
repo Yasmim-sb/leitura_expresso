@@ -4,7 +4,6 @@ import com.MS_Customer.exceptions.build.Problem;
 import com.MS_Customer.exceptions.customExceptions.*;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolationException;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -68,20 +67,20 @@ public class GlobalExceptionsHandler {
         var problem = new Problem(e);
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(problem);
     }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalStateException(IllegalStateException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
-    }
+//
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
+//        Map<String, String> errorResponse = new HashMap<>();
+//        errorResponse.put("error", ex.getMessage());
+//        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+//    }
+//
+//    @ExceptionHandler(IllegalStateException.class)
+//    public ResponseEntity<Map<String, String>> handleIllegalStateException(IllegalStateException ex) {
+//        Map<String, String> errorResponse = new HashMap<>();
+//        errorResponse.put("error", ex.getMessage());
+//        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+//    }
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleUsernameNotFoundException(UsernameNotFoundException ex) {
@@ -91,16 +90,16 @@ public class GlobalExceptionsHandler {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Map<String, String>> handleBadRequestException(BadRequestException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Problem> handleBadRequestException(BadRequestException ex) {
+        var problem = new Problem(ex);
+        return ResponseEntity.status(problem.getCode()).body(problem);
     }
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<Map<String, String>> handleConflictException(ConflictException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    public ResponseEntity<Problem> handleConflictException(ConflictException ex) {
+        var problem = new Problem(ex);
+        return ResponseEntity.status(problem.getCode()).body(problem);
     }
+
+
 }
