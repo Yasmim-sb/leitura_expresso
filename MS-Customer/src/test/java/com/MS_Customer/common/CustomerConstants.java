@@ -72,6 +72,18 @@ public class CustomerConstants {
             .active(true)
             .addressList(null)
             .build();
+
+    public static CustomerDTO CUSTOMERDTO_WITHOUT_PASSWORD = CustomerDTO.builder()
+            .id(1L)
+            .firstName("savana")
+            .lastName("Silva")
+            .sex(SexEnum.FEMININO)
+            .cpf("117.885.222.96")
+            .birthdate(LocalDate.of(2009, 1, 17))
+            .email("pedro@email.com")
+            .active(true)
+            .addressList(null)
+            .build();
     public static Customer CUSTOMER_INVALID_ID = Customer.builder()
             .id(-1L)
             .firstName("Pedro")

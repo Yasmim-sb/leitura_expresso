@@ -67,7 +67,6 @@ public class CustomerService {
         if (customerDTO.getPassword() != null){
             throw new NotAllowedException();
         }
-
         NullBeanUtils.copyNonNullProperties(customerDTO, customerExisting);
 
         return customersDTOMapper.createCustomerDTO(customerRepository.save(customerExisting));

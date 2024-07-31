@@ -26,7 +26,7 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @PutMapping("/customers/{id}")
-    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerDTO customerDTO){
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerDTO customerDTO) throws BadRequestException {
         var customerS = customerService.updateCustomer(id, customerDTO);
         return ResponseEntity.status(HttpStatus.OK).body(customerS);
     }

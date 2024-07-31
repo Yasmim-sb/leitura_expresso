@@ -1,5 +1,6 @@
 package com.MS_Customer.service;
 
+import com.MS_Customer.entities.Customer;
 import com.MS_Customer.exceptions.customExceptions.BadRequestException;
 import com.MS_Customer.exceptions.customExceptions.CustomerNotFoundException;
 import com.MS_Customer.exceptions.customExceptions.NotAllowedException;
@@ -33,6 +34,11 @@ class CustomerServiceTests {
     @Mock
     CustomerRepository customerRepository;
 
+    @Mock
+    CustomerMapper customerMapper;
+    @Mock
+    CustomerDTOMapper customerDTOMapper;
+
 //    @Test
 //    @DisplayName("updatePassword: CorrectPassword > Void")
 //    void updatePassword_withCorrectPassword_Void() {
@@ -54,6 +60,16 @@ class CustomerServiceTests {
 //        verify(customerRepository, never()).save(any());
 //    }
 
+
+    @Test
+    @DisplayName("update: Success in updating")
+    void updateSuccess() {
+        when(customerRepository.findById(1L)).thenReturn(Optional.of(CUSTOMER_WITH_PASSWORD));
+
+        customerService.updateCustomer(1L, CUSTOMERDTO_WITHOUT_PASSWORD);
+        verify(customerRepository, times(1)).save(any(Customer.class));
+
+    }
 
     @Test
     @DisplayName("update: IdCustomerNotFound -> ThrowCustomerNotFoundException")
