@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import static com.leituraexpresso.challenge.mscustomer.common.AddressConstants.*;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,10 +39,10 @@ class AddressControllerImplTests {
     @Test
     @DisplayName("create: validFields > ReturnAddressDTO : Status_201")
     void create_withValidFields_ReturnAddressDTO_Status201() throws Exception{
-        when(addressService.create(AddressConstants.ADDRESS01_REQUEST_CORRECT_FIELDS)).thenReturn(AddressConstants.ADDRESS01_DTO);
+        when(addressService.create(ADDRESS01_REQUEST_CORRECT_FIELDS)).thenReturn(ADDRESS01_DTO);
 
         mockMvc.perform(post("/v1/address")
-        .content(objectMapper.writeValueAsString(AddressConstants.ADDRESS01_REQUEST_CORRECT_FIELDS))
+        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_CORRECT_FIELDS))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isCreated());
 
@@ -52,7 +53,7 @@ class AddressControllerImplTests {
     void create_withInValidFields_ThrowMethodArgumentNotValidException_Status400() throws Exception{
 
         mockMvc.perform(post("/v1/address")
-        .content(objectMapper.writeValueAsString(AddressConstants.ADDRESS01_REQUEST_INVALID_FIELDS))
+        .content(objectMapper.writeValueAsString(ADDRESS01_REQUEST_INVALID_FIELDS))
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest())
         .andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
@@ -84,9 +85,9 @@ class AddressControllerImplTests {
     @Test
     @DisplayName("delete: AddressIdValid > ReturnsVoid : Status_204")
     void delete_withAddressIdValid_ReturnsVoid_Status_204() throws Exception {
-        doNothing().when(addressService).delete(AddressConstants.ADDRESS01_DTO.getId());
+        doNothing().when(addressService).delete(ADDRESS01_DTO.getId());
 
-        mockMvc.perform(delete("/v1/address/{id}", AddressConstants.ADDRESS01_DTO.getId()))
+        mockMvc.perform(delete("/v1/address/{id}", ADDRESS01_DTO.getId()))
         .andExpect(status().isNoContent());
     }
 
