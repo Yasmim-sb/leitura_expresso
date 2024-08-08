@@ -7,5 +7,5 @@ CREATE TABLE customer (
   birthdate DATE,
   email VARCHAR(255) NOT NULL UNIQUE,
   password VARCHAR(255) NOT NULL CHECK (LENGTH(password) >= 6),
-  active BOOLEAN DEFAULT TRUE,
+  active BOOLEAN DEFAULT TRUE
 );

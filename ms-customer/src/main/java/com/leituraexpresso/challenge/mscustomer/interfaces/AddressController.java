@@ -10,6 +10,6 @@ public interface AddressController {
 
     ResponseEntity<AddressDTO> updateAddress(Long id, AddressRequest request);
 
-    ResponseEntity<Void> deleteAddress(Long id);
+    ResponseEntity<String> deleteAddress(Long id);
 
 }
