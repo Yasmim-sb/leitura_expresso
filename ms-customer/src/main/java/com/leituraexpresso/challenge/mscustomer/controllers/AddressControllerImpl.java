@@ -40,9 +40,8 @@ public class AddressControllerImpl implements AddressController {
 
     @Override
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAddress(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
         addressService.delete(id);
-        return ResponseEntity.ok("Endereço deletado com sucesso!");
+        return ResponseEntity.noContent().build();
     }
-
 }

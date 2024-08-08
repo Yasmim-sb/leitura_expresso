@@ -64,7 +64,7 @@ class AddressControllerImplTests {
         doNothing().when(addressService).delete(AddressConstants.ADDRESS01_DTO.getId());
 
         mockMvc.perform(delete("/v1/address/{id}", AddressConstants.ADDRESS01_DTO.getId()))
-        .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -73,7 +73,6 @@ class AddressControllerImplTests {
         doThrow(AddressNotFoundException.class).when(addressService).delete(99L);
 
         mockMvc.perform(delete("/v1/address/{id}", 99L))
-        .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
     }
-
 }

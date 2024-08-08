@@ -76,21 +76,4 @@ public class CustomerService {
         var customer = customerRepository.getReferenceById(id);
         return customersDTOMapper.createCustomerDTO(customer);
     }
-
-
-    //Comentei pois são endpoints que serão criados ou mexidos posteriormente
-//    public void updatePassword(Long id, CustomerNewPasswordRequest newPasswordDTO){
-//        changePasswordFromCustomer(getCustomerById(id), newPasswordDTO);
-//    }
-//
-//    private Customer getCustomerById(Long id) {
-//        return customerRepository.findById(id).orElseThrow(NotAllowedExceptionException::new);
-//    }
-
-
-    private void changePasswordFromCustomer(Customer customer, CustomerNewPasswordRequest newPasswordDTO){
-        customer.setPassword(newPasswordDTO.getNewPassword());
-        customerRepository.save(customer);
-    }
-
 }
