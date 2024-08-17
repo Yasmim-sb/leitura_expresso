@@ -29,7 +29,6 @@ public class CustomerControllerImpl implements CustomerController {
         var customerS = customerService.updateCustomer(id, customerDTO);
         return ResponseEntity.status(HttpStatus.OK).body(customerS);
     }
-
     @GetMapping("/customers/{id}")
     public CustomerDTO getCustomer(@PathVariable Long id) {
         CustomerDTO customerDTO = customerService.getCustomer(id);
