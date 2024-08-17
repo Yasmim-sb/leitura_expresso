@@ -23,7 +23,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
-                    .withIssuer("MS_Customer")
+                    .withIssuer("ms-customer")
                     .withSubject(customer.getEmail())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
@@ -32,9 +32,9 @@ public class TokenService {
         }
     }
 
-    public String validadeToken(String token) {
+    public String validateToken(String token) {
         return JWT.require(Algorithm.HMAC256(secret))
-                .withIssuer("MS_Customer")
+                .withIssuer("ms-customer")
                 .build()
                 .verify(token)
                 .getSubject();
