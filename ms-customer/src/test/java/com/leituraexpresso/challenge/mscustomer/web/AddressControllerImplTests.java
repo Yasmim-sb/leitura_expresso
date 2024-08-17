@@ -1,11 +1,9 @@
 package com.leituraexpresso.challenge.mscustomer.web;
 
-import com.leituraexpresso.challenge.mscustomer.common.AddressConstants;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.leituraexpresso.challenge.mscustomer.controllers.AddressControllerImpl;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.AddressNotFoundException;
-import com.leituraexpresso.challenge.mscustomer.infra.security.TokenService;
 import com.leituraexpresso.challenge.mscustomer.services.AddressService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +14,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static com.leituraexpresso.challenge.mscustomer.common.AddressConstants.*;
-import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @WebMvcTest(AddressControllerImpl.class)
@@ -98,7 +93,6 @@ class AddressControllerImplTests {
         doThrow(AddressNotFoundException.class).when(addressService).delete(99L);
 
         mockMvc.perform(delete("/v1/address/{id}", 99L))
-        .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());
     }
-
 }
