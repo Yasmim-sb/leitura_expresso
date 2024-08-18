@@ -3,12 +3,15 @@ package com.leituraexpresso.challenge.mscustomer.controllers;
 import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.ConflictException;
 import com.leituraexpresso.challenge.mscustomer.interfaces.CustomerController;
+import com.leituraexpresso.challenge.mscustomer.request.CustomerNewPasswordRequest;
 import com.leituraexpresso.challenge.mscustomer.services.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -35,16 +38,11 @@ public class CustomerControllerImpl implements CustomerController {
         return new ResponseEntity<>(customerDTO, HttpStatus.OK).getBody();
     }
 
-// Comentando pois é um codigo que sera mexido posteriormente
-//    @Override
-//    @PutMapping("/customers/{id}/password")
-//    public ResponseEntity<Void> changePasswordCustomer(@PathVariable Long id, @RequestBody @Valid CustomerNewPasswordRequest newPasswordRequest) {
-//        customerService.updatePassword(id, newPasswordRequest);
-//        return ResponseEntity.noContent().build();
-//    }
-//    @PutMapping("/customers/{id}/password")
-//    public ResponseEntity<Void> changePasswordCustomer(@PathVariable Long id, @RequestBody @Valid CustomerNewPasswordRequest newPasswordRequest) {
-//        customerService.updatePassword(id, newPasswordRequest);
-//        return ResponseEntity.noContent().build();
-//    }
+    @Override
+    @PutMapping("/customers/{id}/password")
+    public ResponseEntity<Void> changePasswordCustomer(@PathVariable Long id, @AuthenticationPrincipal UserDetails customerAuthenticated, @RequestBody @Valid CustomerNewPasswordRequest newPasswordRequest) {
+        customerService.updatePassword(id, customerAuthenticated, newPasswordRequest);
+        return ResponseEntity.noContent().build();
+    }
+
 }

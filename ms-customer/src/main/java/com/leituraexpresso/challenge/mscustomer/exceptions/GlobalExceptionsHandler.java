@@ -44,11 +44,12 @@ public class GlobalExceptionsHandler {
         return ResponseEntity.status(ex.getHttpStatus()).body(problem);
     }
 
-    @ExceptionHandler(FeignCepNotFoundException.class)
-    public ResponseEntity<Object> handlerFeignCepNotFoundException(){
-        StandardCustomException feignCepNotFoundException = new FeignCepNotFoundException();
-        var problem = new Problem(feignCepNotFoundException.getMessageErrorCode(), feignCepNotFoundException.getHttpStatus());
-        return ResponseEntity.status(feignCepNotFoundException.getHttpStatus()).body(problem);
+
+    @ExceptionHandler(NotAllowedToChangePasswordFromOtherCustomerException.class)
+    public ResponseEntity<Object> handlerNotAllowedToChangePasswordFromOtherCustomerException(){
+        StandardCustomException notAllowed = new NotAllowedToChangePasswordFromOtherCustomerException();
+        var problem = new Problem(notAllowed.getMessageErrorCode(), notAllowed.getHttpStatus());
+        return ResponseEntity.status(notAllowed.getHttpStatus()).body(problem);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
