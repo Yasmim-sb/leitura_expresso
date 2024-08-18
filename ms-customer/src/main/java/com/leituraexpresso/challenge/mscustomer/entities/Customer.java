@@ -1,5 +1,6 @@
 package com.leituraexpresso.challenge.mscustomer.entities;
 
+import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
 import com.leituraexpresso.challenge.mscustomer.entities.validate.ValidAge;
 import com.leituraexpresso.challenge.mscustomer.enums.SexEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,6 +14,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -57,7 +60,23 @@ public class Customer implements UserDetails {
 
     @OneToMany(mappedBy = "customerId", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Address> addressList;
+    private List<Address> addressList = new ArrayList<>();
+
+    public Customer(CustomerDTO customerDTO, Customer customer){
+        id = customerDTO.getId();
+        firstName = customerDTO.getFirstName();
+        lastName = customerDTO.getLastName();
+        sex = customerDTO.getSex();
+        cpf = customerDTO.getCpf();
+        birthdate = customerDTO.getBirthdate();
+        email = customerDTO.getEmail();
+        password = customerDTO.getPassword();
+        active = customerDTO.isActive();
+        addressList.addAll(
+            customerDTO.getAddressList().stream()
+            .map(address -> new Address(address, customer)).toList()
+        );
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
