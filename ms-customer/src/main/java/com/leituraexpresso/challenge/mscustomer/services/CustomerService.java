@@ -91,8 +91,8 @@ public class CustomerService {
     private void changePasswordFromCustomer(
         Long idCustomer,
         UserDetails customerAuthenticated,
-        CustomerNewPasswordRequest newPasswordDTO)
-    {
+        CustomerNewPasswordRequest newPasswordDTO
+    ){
         CustomerDTO customerAuth = getCustomerByEmail(customerAuthenticated.getUsername());
         CustomerDTO customerDTO = getCustomerByIdAuth(idCustomer);
 

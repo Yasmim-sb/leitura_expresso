@@ -18,6 +18,8 @@ public enum ErrorCodeEnum {
 
     SYSTEM_ERROR("Unavailable server"),
 
+    TOKEN_EXPIRATED("The Token has expired on "),
+
     NOT_ALLOWED("Not allowed"),
 
     NOT_ALLOWED_ALTER_ADDRESS("Not allowed alter address from other customer, the id need to be the same");

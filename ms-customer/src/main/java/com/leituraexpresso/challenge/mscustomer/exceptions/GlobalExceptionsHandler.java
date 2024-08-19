@@ -19,10 +19,10 @@ import java.util.Map;
 public class GlobalExceptionsHandler {
 
     @ExceptionHandler(CustomerNotFoundException.class)
-    public ResponseEntity<Object> handlerCustomerNotFoundExeption(){
-        StandardCustomException customerNotFoundExeption = new CustomerNotFoundException();
-        var problem = new Problem(customerNotFoundExeption.getMessageErrorCode(), customerNotFoundExeption.getHttpStatus());
-        return ResponseEntity.status(customerNotFoundExeption.getHttpStatus()).body(problem);
+    public ResponseEntity<Object> handlerCustomerNotFoundException(){
+        StandardCustomException customerNotFoundException = new CustomerNotFoundException();
+        var problem = new Problem(customerNotFoundException.getMessageErrorCode(), customerNotFoundException.getHttpStatus());
+        return ResponseEntity.status(customerNotFoundException.getHttpStatus()).body(problem);
     }
 
     @ExceptionHandler(AddressNotFoundException.class)
