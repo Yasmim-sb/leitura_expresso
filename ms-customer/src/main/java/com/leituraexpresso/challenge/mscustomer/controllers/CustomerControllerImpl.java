@@ -40,7 +40,10 @@ public class CustomerControllerImpl implements CustomerController {
 
     @Override
     @PutMapping("/customers/{id}/password")
-    public ResponseEntity<Void> changePasswordCustomer(@PathVariable Long id, @AuthenticationPrincipal UserDetails customerAuthenticated, @RequestBody @Valid CustomerNewPasswordRequest newPasswordRequest) {
+    public ResponseEntity<Void> changePasswordCustomer(
+    @PathVariable Long id,
+    @AuthenticationPrincipal UserDetails customerAuthenticated,
+    @RequestBody @Valid CustomerNewPasswordRequest newPasswordRequest) {
         customerService.updatePassword(id, customerAuthenticated, newPasswordRequest);
         return ResponseEntity.noContent().build();
     }
