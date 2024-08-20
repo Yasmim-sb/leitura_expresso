@@ -1,45 +1,35 @@
 package com.leituraexpresso.challenge.mscustomer.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.leituraexpresso.challenge.mscustomer.controllers.AddressControllerImpl;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.AddressNotFoundException;
 import com.leituraexpresso.challenge.mscustomer.services.AddressService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.context.WebApplicationContext;
 
 import static com.leituraexpresso.challenge.mscustomer.common.AddressConstants.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-//@WebMvcTest(AddressControllerImpl.class)
-@SpringBootTest
+@WebMvcTest(AddressControllerImpl.class)
+@AutoConfigureMockMvc(addFilters = false)
 class AddressControllerImplTests {
 
-    MockMvc mockMvc;
-
     @Autowired
-    private WebApplicationContext context;
-
-    @BeforeEach
-    public void setUp(){
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
-        .apply(springSecurity())
-        .build();
-    }
+    MockMvc mockMvc;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -49,6 +39,7 @@ class AddressControllerImplTests {
 
     @Test
     @DisplayName("create: validFields > ReturnAddressDTO : Status_201")
+    @WithMockUser(value = "pedro", authorities = "USER")
     void create_withValidFields_ReturnAddressDTO_Status201() throws Exception{
         when(addressService.create(ADDRESS01_REQUEST_CORRECT_FIELDS)).thenReturn(ADDRESS01_DTO);
 
