@@ -1,32 +1,30 @@
 package com.leituraexpresso.challenge.mscustomer.exceptions;
 
+import com.leituraexpresso.challenge.mscustomer.enums.ErrorCodeEnum;
 import com.leituraexpresso.challenge.mscustomer.exceptions.build.Problem;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.*;
 import feign.FeignException;
 import jakarta.validation.ConstraintViolationException;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionsHandler {
 
     @ExceptionHandler(CustomerNotFoundException.class)
-    public ResponseEntity<Object> handlerCustomerNotFoundException(){
+    public ResponseEntity<Object> handlerCustomerNotFoundException() {
         StandardCustomException customerNotFoundException = new CustomerNotFoundException();
         var problem = new Problem(customerNotFoundException.getMessageErrorCode(), customerNotFoundException.getHttpStatus());
         return ResponseEntity.status(customerNotFoundException.getHttpStatus()).body(problem);
     }
 
     @ExceptionHandler(AddressNotFoundException.class)
-    public ResponseEntity<Object> handlerAddressNotFoundException(){
+    public ResponseEntity<Object> handlerAddressNotFoundException() {
         StandardCustomException addressNotFoundException = new AddressNotFoundException();
         var problem = new Problem(addressNotFoundException.getMessageErrorCode(), addressNotFoundException.getHttpStatus());
         return ResponseEntity.status(addressNotFoundException.getHttpStatus()).body(problem);
@@ -44,6 +42,12 @@ public class GlobalExceptionsHandler {
         return ResponseEntity.status(ex.getHttpStatus()).body(problem);
     }
 
+    @ExceptionHandler(FeignCepNotFoundException.class)
+    public ResponseEntity<Object> handlerFeignCepNotFoundException() {
+        StandardCustomException feignCepNotFoundException = new FeignCepNotFoundException();
+        var problem = new Problem(feignCepNotFoundException.getMessageErrorCode(), feignCepNotFoundException.getHttpStatus());
+        return ResponseEntity.status(feignCepNotFoundException.getHttpStatus()).body(problem);
+    }
 
     @ExceptionHandler(NotAllowedToChangePasswordFromOtherCustomerException.class)
     public ResponseEntity<Object> handlerNotAllowedToChangePasswordFromOtherCustomerException(){
@@ -53,55 +57,32 @@ public class GlobalExceptionsHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handlerConstraintViolationException(ConstraintViolationException ex){
+    public ResponseEntity<Object> handlerConstraintViolationException(ConstraintViolationException ex) {
         var problem = new Problem(ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+    public ResponseEntity<Object> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         var problem = new Problem(ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
     }
 
     @ExceptionHandler(FeignException.class)
-    public final ResponseEntity<Object> handlerFeignException(FeignException e){
+    public final ResponseEntity<Object> handlerFeignException(FeignException e) {
         var problem = new Problem(e);
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(problem);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(NoResourceFoundException.class)
+    public final ResponseEntity<Object> handlerNoResourceFoundException() {
+        var problem = new Problem(ErrorCodeEnum.NOT_FOUND, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
     }
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalStateException(IllegalStateException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleUsernameNotFoundException(UsernameNotFoundException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Map<String, String>> handleBadRequestException(BadRequestException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<Map<String, String>> handleConflictException(ConflictException ex) {
-        Map<String, String> errorResponse = new HashMap<>();
-        errorResponse.put("error", ex.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public final ResponseEntity<Object> handlerMethodArgumentTypeMismatchException() {
+        var problem = new Problem(ErrorCodeEnum.BAD_REQUEST, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
     }
 }

@@ -8,7 +8,6 @@ import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerMapper;
 import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
 import com.leituraexpresso.challenge.mscustomer.entities.Customer;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedException;
-import com.leituraexpresso.challenge.mscustomer.request.CustomerNewPasswordRequest;
 import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
@@ -29,6 +28,7 @@ public class CustomerService {
     private final AddressService addressService;
     private final CustomerDTOMapper customersDTOMapper;
     private final PasswordEncoder passwordEncoder;
+    private final CustomerDTOMapper customerDTOMapper;
 
     public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws BadRequestException, ConflictException {
         if (customerDTO.getFirstName().isEmpty() ||
@@ -61,12 +61,11 @@ public class CustomerService {
         return ResponseEntity.ok(response);
     }
 
-
-    public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
+    public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO) {
         var customerExisting = customerRepository.findById(id)
-        .orElseThrow(NotAllowedException::new);
+                .orElseThrow(NotAllowedException::new);
 
-        if (customerDTO.getPassword() != null){
+        if (customerDTO.getPassword() != null) {
             throw new NotAllowedException();
         }
         NullBeanUtils.copyNonNullProperties(customerDTO, customerExisting);
@@ -74,9 +73,8 @@ public class CustomerService {
         return customersDTOMapper.createCustomerDTO(customerRepository.save(customerExisting));
     }
 
-
-    public CustomerDTO getCustomer(Long id) {
-        var customer = customerRepository.getReferenceById(id);
+    public CustomerDTO getCustomerById(Long id) {
+        var customer = customerRepository.findById(id).orElseThrow(CustomerNotFoundException::new);
         return customersDTOMapper.createCustomerDTO(customer);
     }
 

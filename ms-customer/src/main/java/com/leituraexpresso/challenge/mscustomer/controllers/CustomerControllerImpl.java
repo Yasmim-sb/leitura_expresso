@@ -28,14 +28,15 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @PutMapping("/customers/{id}")
-    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerDTO customerDTO){
+    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerDTO customerDTO) {
         var customerS = customerService.updateCustomer(id, customerDTO);
         return ResponseEntity.status(HttpStatus.OK).body(customerS);
     }
+
     @GetMapping("/customers/{id}")
-    public CustomerDTO getCustomer(@PathVariable Long id) {
-        CustomerDTO customerDTO = customerService.getCustomer(id);
-        return new ResponseEntity<>(customerDTO, HttpStatus.OK).getBody();
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
+        var customer = customerService.getCustomerById(id);
+        return ResponseEntity.ok().body(customer);
     }
 
     @Override
