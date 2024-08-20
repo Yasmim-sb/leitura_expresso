@@ -1,6 +1,7 @@
 package com.leituraexpresso.challenge.mscustomer.controllers;
 
 import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
+import com.leituraexpresso.challenge.mscustomer.dto.requests.CustomerRequestDTO;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.ConflictException;
 import com.leituraexpresso.challenge.mscustomer.interfaces.CustomerController;
 import com.leituraexpresso.challenge.mscustomer.request.CustomerNewPasswordRequest;
@@ -22,9 +23,9 @@ public class CustomerControllerImpl implements CustomerController {
     private final CustomerService customerService;
 
     @PostMapping("/customers")
-    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerDTO customerDTO) throws BadRequestException, ConflictException {
-        var customerDTOResponse = customerService.createCustomer(customerDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOResponse.getBody());
+    public ResponseEntity<CustomerDTO> createCustomer(@RequestBody @Valid CustomerRequestDTO customerRequestDTO){
+        var customerDTOResponse = customerService.createCustomer(customerRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerDTOResponse);
     }
 
     @PutMapping("/customers/{id}")

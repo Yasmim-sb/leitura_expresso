@@ -1,5 +1,6 @@
 package com.leituraexpresso.challenge.mscustomer.dto;
 
+import com.leituraexpresso.challenge.mscustomer.dto.requests.CustomerRequestDTO;
 import com.leituraexpresso.challenge.mscustomer.dto.response.AddressResponse;
 import com.leituraexpresso.challenge.mscustomer.entities.Customer;
 import com.leituraexpresso.challenge.mscustomer.enums.CustomerRole;
@@ -58,5 +59,16 @@ public class CustomerDTO {
             customer.getAddressList().stream()
             .map(AddressResponse::new).toList()
         );
+    }
+
+    public CustomerDTO(CustomerRequestDTO requestDTO, String newPassword){
+        firstName = requestDTO.firstName();
+        lastName = requestDTO.lastName();
+        sex = requestDTO.sex();
+        cpf = requestDTO.cpf();
+        birthdate = requestDTO.birthdate();
+        email = requestDTO.email();
+        password = newPassword;
+        active = requestDTO.active();
     }
 }

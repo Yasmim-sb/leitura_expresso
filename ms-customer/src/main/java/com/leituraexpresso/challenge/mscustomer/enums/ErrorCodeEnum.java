@@ -10,6 +10,10 @@ public enum ErrorCodeEnum {
 
     CUSTOMER_NOT_FOUND("Customer not found"),
 
+    EMAIL_ALREADY_IN_USE("Email already in use"),
+
+    CPF_ALREADY_IN_USE("CPF already in use"),
+
     NO_ADDRESS_BY_CEP_FOUND("This cep isn't have a valid address"),
 
     BAD_REQUEST("Invalid data"),

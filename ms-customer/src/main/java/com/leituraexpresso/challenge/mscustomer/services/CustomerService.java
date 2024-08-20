@@ -1,13 +1,11 @@
 package com.leituraexpresso.challenge.mscustomer.services;
 
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.ConflictException;
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.CustomerNotFoundException;
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedToChangePasswordFromOtherCustomerException;
+import com.leituraexpresso.challenge.mscustomer.dto.requests.CustomerRequestDTO;
+import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.*;
 import com.leituraexpresso.challenge.mscustomer.repositories.CustomerRepository;
 import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerMapper;
 import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
 import com.leituraexpresso.challenge.mscustomer.entities.Customer;
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedException;
 import com.leituraexpresso.challenge.mscustomer.request.CustomerNewPasswordRequest;
 import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerDTOMapper;
 import lombok.RequiredArgsConstructor;
@@ -30,37 +28,30 @@ public class CustomerService {
     private final CustomerDTOMapper customersDTOMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws BadRequestException, ConflictException {
-        if (customerDTO.getFirstName().isEmpty() ||
-                customerDTO.getLastName().isEmpty() ||
-                customerDTO.getSex() == null ||
-                customerDTO.getCpf().isEmpty() ||
-                customerDTO.getBirthdate() == null ||
-                customerDTO.getEmail().isEmpty() ||
-                customerDTO.getPassword().isEmpty()) {
-            throw new BadRequestException("Um ou mais campos obrigatórios estão vazios ou nulos.");
-        }
+    public CustomerDTO createCustomer(CustomerRequestDTO customerDTO) {
+        checkEmail(customerDTO.email());
+        checkCPF(customerDTO.cpf());
 
-        Optional<Customer> existingCustomerByEmail = customerRepository.findByEmail(customerDTO.getEmail());
-        if (existingCustomerByEmail.isPresent()) {
-            throw new ConflictException("Email já em uso.");
-        }
+        String encryptedPassword = new BCryptPasswordEncoder().encode(customerDTO.password());
 
-        Optional<Customer> existingCustomerByCpf = customerRepository.findByCpf(customerDTO.getCpf());
-        if (existingCustomerByCpf.isPresent()) {
-            throw new ConflictException("CPF já em uso.");
-        }
+        var customer1 = new CustomerDTO(customerDTO, encryptedPassword);
 
-        String encryptedPassword = passwordEncoder.encode(customerDTO.getPassword());
-        customerDTO.setPassword(encryptedPassword);
-
-        var customer = customerMapper.createCustomer(customerDTO);
-        customerRepository.save(customer);
-
-        var response = customersDTOMapper.createCustomerDTO(customer);
-        return ResponseEntity.ok(response);
+        return new CustomerDTO(saveCustomer(customer1));
     }
 
+    private Customer saveCustomer(CustomerDTO customerDTO){
+        return customerRepository.save(new Customer(customerDTO));
+    }
+
+    private void checkEmail(String email){
+        if (customerRepository.findByEmail(email).isPresent())
+            throw new EmailAddressAlreadyExistsException();
+    }
+
+    private void checkCPF(String cpf){
+        if (customerRepository.findByCpf(cpf).isPresent())
+            throw new CPFAlreadyInUseException();
+    }
 
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO){
         var customerExisting = customerRepository.findById(id)
