@@ -1,15 +1,12 @@
 package com.leituraexpresso.challenge.mscustomer.service;
 
-
 import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
 import com.leituraexpresso.challenge.mscustomer.entities.Customer;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.CustomerNotFoundException;
+import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedToChangePasswordFromOtherCustomerException;
 import com.leituraexpresso.challenge.mscustomer.repositories.CustomerRepository;
 import com.leituraexpresso.challenge.mscustomer.services.CustomerService;
 import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerDTOMapper;
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.CustomerNotFoundException;
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedToChangePasswordFromOtherCustomerException;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -22,12 +19,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static com.leituraexpresso.challenge.mscustomer.common.AddressConstants.CUSTOMER02_IN_DB;
+import static com.leituraexpresso.challenge.mscustomer.common.CustomerConstants.*;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static com.leituraexpresso.challenge.mscustomer.common.CustomerConstants.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,14 +50,22 @@ class CustomerServiceTests {
 
         when(customerDTOMapper.createCustomerDTO(CUSTOMER02_IN_DB)).thenReturn(expectedResponse);
         when(customerRepository.findById(ID)).thenReturn(Optional.of(customer));
-      
-      CustomerDTO response = customerService.getCustomerById(ID);
+
+        CustomerDTO response = customerService.getCustomerById(ID);
 
         assertNotNull(response);
         assertEquals(expectedResponse, response);
         verify(customerRepository).findById(anyLong());
     }
-  
+
+    @Test
+    @DisplayName("getCustomerById: IdCustomerDoesNotExist > CustomerNotFoundException")
+    void getCustomerById_IdCustomerDoesNotExist_CustomerNotFoundException() {
+        when(customerRepository.findById(ID)).thenReturn(Optional.empty());
+
+        assertThrows(CustomerNotFoundException.class, () -> customerService.getCustomerById(ID));
+    }
+
     @Test
     @DisplayName("updatePassword: CorrectPassword > Void")
     void updatePassword_withCorrectPassword_Void() {
@@ -82,9 +87,9 @@ class CustomerServiceTests {
 
         assertThrows(CustomerNotFoundException.class,
         () -> customerService.updatePassword(
-            99L,
-            CUSTOMER01_IN_DB_USERDETAILS,
-            CUSTOM_CORRECT_PASSWORD_REQUEST
+        99L,
+        CUSTOMER01_IN_DB_USERDETAILS,
+        CUSTOM_CORRECT_PASSWORD_REQUEST
         ));
         verify(customerRepository, times(1)).findById(any());
         verify(customerRepository, times(1)).findByEmail(any());
@@ -100,9 +105,9 @@ class CustomerServiceTests {
 
         assertThrows(NotAllowedToChangePasswordFromOtherCustomerException.class,
         () -> customerService.updatePassword(
-            2L,
-            CUSTOMER01_IN_DB_USERDETAILS,
-            CUSTOM_CORRECT_PASSWORD_REQUEST
+        2L,
+        CUSTOMER01_IN_DB_USERDETAILS,
+        CUSTOM_CORRECT_PASSWORD_REQUEST
         ));
         verify(customerRepository, times(1)).findById(any());
         verify(customerRepository, times(1)).findByEmail(any());
@@ -121,15 +126,5 @@ class CustomerServiceTests {
 //
 //    }
 
-
-        
-
-    @Test
-    @DisplayName("getCustomerById: IdCustomerDoesNotExist > CustomerNotFoundException")
-    void getCustomerById_IdCustomerDoesNotExist_CustomerNotFoundException() {
-        when(customerRepository.findById(ID)).thenReturn(Optional.empty());
-
-        assertThrows(CustomerNotFoundException.class, () -> customerService.getCustomerById(ID));
-    }
 }
 

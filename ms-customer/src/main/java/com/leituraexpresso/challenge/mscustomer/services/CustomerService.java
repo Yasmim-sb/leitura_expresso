@@ -4,6 +4,7 @@ import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.Conf
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.CustomerNotFoundException;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedToChangePasswordFromOtherCustomerException;
 import com.leituraexpresso.challenge.mscustomer.repositories.CustomerRepository;
+import com.leituraexpresso.challenge.mscustomer.request.CustomerNewPasswordRequest;
 import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerMapper;
 import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
 import com.leituraexpresso.challenge.mscustomer.entities.Customer;
