@@ -17,10 +17,10 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 public class GlobalExceptionsHandler {
 
     @ExceptionHandler(CustomerNotFoundException.class)
-    public ResponseEntity<Object> handlerCustomerNotFoundExeption() {
-        StandardCustomException customerNotFoundExeption = new CustomerNotFoundException();
-        var problem = new Problem(customerNotFoundExeption.getMessageErrorCode(), customerNotFoundExeption.getHttpStatus());
-        return ResponseEntity.status(customerNotFoundExeption.getHttpStatus()).body(problem);
+    public ResponseEntity<Object> handlerCustomerNotFoundException() {
+        StandardCustomException customerNotFoundException = new CustomerNotFoundException();
+        var problem = new Problem(customerNotFoundException.getMessageErrorCode(), customerNotFoundException.getHttpStatus());
+        return ResponseEntity.status(customerNotFoundException.getHttpStatus()).body(problem);
     }
 
     @ExceptionHandler(AddressNotFoundException.class)
@@ -47,6 +47,13 @@ public class GlobalExceptionsHandler {
         StandardCustomException feignCepNotFoundException = new FeignCepNotFoundException();
         var problem = new Problem(feignCepNotFoundException.getMessageErrorCode(), feignCepNotFoundException.getHttpStatus());
         return ResponseEntity.status(feignCepNotFoundException.getHttpStatus()).body(problem);
+    }
+
+    @ExceptionHandler(NotAllowedToChangePasswordFromOtherCustomerException.class)
+    public ResponseEntity<Object> handlerNotAllowedToChangePasswordFromOtherCustomerException(){
+        StandardCustomException notAllowed = new NotAllowedToChangePasswordFromOtherCustomerException();
+        var problem = new Problem(notAllowed.getMessageErrorCode(), notAllowed.getHttpStatus());
+        return ResponseEntity.status(notAllowed.getHttpStatus()).body(problem);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

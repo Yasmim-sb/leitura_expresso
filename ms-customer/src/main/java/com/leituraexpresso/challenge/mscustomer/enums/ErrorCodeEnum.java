@@ -14,7 +14,11 @@ public enum ErrorCodeEnum {
 
     BAD_REQUEST("Invalid data"),
 
+    NOT_ALL0WED_CHANGE_PASSWORD_FROM_OTHER_CUSTOMER("not allowed to change password from other customer"),
+
     SYSTEM_ERROR("Unavailable server"),
+
+    TOKEN_EXPIRATED("The Token has expired on "),
 
     NOT_ALLOWED("Not allowed"),
 

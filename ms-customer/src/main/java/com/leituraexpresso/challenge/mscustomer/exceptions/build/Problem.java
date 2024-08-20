@@ -1,5 +1,7 @@
 package com.leituraexpresso.challenge.mscustomer.exceptions.build;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.leituraexpresso.challenge.mscustomer.enums.ErrorCodeEnum;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedException;
 import feign.FeignException;

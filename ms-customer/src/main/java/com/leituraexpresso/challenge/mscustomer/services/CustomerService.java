@@ -1,16 +1,19 @@
 package com.leituraexpresso.challenge.mscustomer.services;
 
-import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
-import com.leituraexpresso.challenge.mscustomer.entities.Customer;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.ConflictException;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.CustomerNotFoundException;
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedException;
+import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedToChangePasswordFromOtherCustomerException;
 import com.leituraexpresso.challenge.mscustomer.repositories.CustomerRepository;
-import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerDTOMapper;
 import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerMapper;
+import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
+import com.leituraexpresso.challenge.mscustomer.entities.Customer;
+import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedException;
+import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerDTOMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -75,4 +78,53 @@ public class CustomerService {
         return customersDTOMapper.createCustomerDTO(customer);
     }
 
+    public void updatePassword(
+        Long idCustomer,
+        UserDetails customerAuthenticated,
+        CustomerNewPasswordRequest newPasswordDTO
+    ){
+        changePasswordFromCustomer(idCustomer, customerAuthenticated, newPasswordDTO);
+    }
+
+    private void changePasswordFromCustomer(
+        Long idCustomer,
+        UserDetails customerAuthenticated,
+        CustomerNewPasswordRequest newPasswordDTO
+    ){
+        CustomerDTO customerAuth = getCustomerByEmail(customerAuthenticated.getUsername());
+        CustomerDTO customerDTO = getCustomerByIdAuth(idCustomer);
+
+        checkIfItIsSameCustomer(customerAuth, customerDTO);
+
+        String encode = new BCryptPasswordEncoder().encode(newPasswordDTO.toString());
+
+        customerAuth.setPassword(encode);
+
+        customerRepository.save(new Customer(customerAuth, returnEntityByEmail(customerAuth.getEmail())));
+    }
+
+    private void checkIfItIsSameCustomer(CustomerDTO customerAuth, CustomerDTO customerDTO){
+        if (!customerAuth.getEmail().equals(customerDTO.getEmail()))
+            throw new NotAllowedToChangePasswordFromOtherCustomerException();
+    }
+
+    private CustomerDTO getCustomerByEmail(String email){
+        var customer = returnEntityByEmail(email);
+
+        return new CustomerDTO(customer);
+    }
+
+    private Customer returnEntityByEmail(String email){
+        return customerRepository.findByEmail(email).orElseThrow(CustomerNotFoundException::new);
+    }
+
+    private CustomerDTO getCustomerByIdAuth(Long id){
+        var customer = returnEntity(id);
+
+        return new CustomerDTO(customer);
+    }
+
+    private Customer returnEntity(Long id){
+        return customerRepository.findById(id).orElseThrow(CustomerNotFoundException::new);
+    }
 }

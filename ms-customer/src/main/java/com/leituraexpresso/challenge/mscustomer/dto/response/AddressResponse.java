@@ -1,6 +1,7 @@
 package com.leituraexpresso.challenge.mscustomer.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.leituraexpresso.challenge.mscustomer.entities.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,4 +28,15 @@ public class AddressResponse{
     private String cep;
 
     private String complement;
+
+    public AddressResponse(Address address){
+        id = address.getId();
+        state = address.getState();
+        city = address.getCity();
+        district = address.getDistrict();
+        street = address.getStreet();
+        number = address.getNumber();
+        cep = address.getCep();
+        complement = address.getComplement();
+    }
 }

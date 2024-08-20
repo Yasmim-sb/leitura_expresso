@@ -1,6 +1,7 @@
 package com.leituraexpresso.challenge.mscustomer.entities;
 
 import com.leituraexpresso.challenge.mscustomer.client.models.AddressByCep;
+import com.leituraexpresso.challenge.mscustomer.dto.response.AddressResponse;
 import com.leituraexpresso.challenge.mscustomer.request.AddressRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -58,8 +59,6 @@ public class Address {
         this.customerId = customer;
     }
 
-    public Address(Long id, String state, String city, String district, String street, String number, String cep, String complement) {}
-
     public Address(AddressByCep byCep, AddressRequest request, Customer customer, Address addressInDb){
         this.id = addressInDb.getId();
         this.state = byCep.getUf().getNome();
@@ -70,5 +69,17 @@ public class Address {
         this.cep = request.getCep();
         this.complement = request.getComplement();
         this.customerId = customer;
+    }
+
+    public Address(AddressResponse response, Customer customer){
+        id = response.getId();
+        state = response.getState();
+        city = response.getCity();
+        district = response.getDistrict();
+        street = response.getStreet();
+        number = response.getNumber();
+        cep = response.getCep();
+        complement = response.getComplement();
+        customerId = customer;
     }
 }
