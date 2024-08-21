@@ -2,6 +2,7 @@ package com.leituraexpresso.challenge.mscustomer.entities;
 
 import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
 import com.leituraexpresso.challenge.mscustomer.dto.requests.CustomerRequestDTO;
+import com.leituraexpresso.challenge.mscustomer.dto.response.CustomerResponseDTO;
 import com.leituraexpresso.challenge.mscustomer.entities.validate.ValidAge;
 import com.leituraexpresso.challenge.mscustomer.enums.SexEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -89,6 +90,17 @@ public class Customer implements UserDetails {
         email = customerDTO.getEmail();
         password = customerDTO.getPassword();
         active = customerDTO.isActive();
+    }
+
+    public Customer(CustomerRequestDTO responseDTO, String password){
+        firstName = responseDTO.firstName();
+        lastName = responseDTO.lastName();
+        sex = responseDTO.sex();
+        cpf = responseDTO.cpf();
+        birthdate = responseDTO.birthdate();
+        email = responseDTO.email();
+        this.password = password;
+        active = responseDTO.active();
     }
 
     @Override

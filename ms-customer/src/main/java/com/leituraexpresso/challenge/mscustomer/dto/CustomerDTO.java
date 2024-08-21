@@ -60,15 +60,4 @@ public class CustomerDTO {
             .map(AddressResponse::new).toList()
         );
     }
-
-    public CustomerDTO(CustomerRequestDTO requestDTO, String newPassword){
-        firstName = requestDTO.firstName();
-        lastName = requestDTO.lastName();
-        sex = requestDTO.sex();
-        cpf = requestDTO.cpf();
-        birthdate = requestDTO.birthdate();
-        email = requestDTO.email();
-        password = newPassword;
-        active = requestDTO.active();
-    }
 }

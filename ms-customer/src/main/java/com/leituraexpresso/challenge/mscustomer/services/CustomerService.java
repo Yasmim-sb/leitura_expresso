@@ -1,6 +1,7 @@
 package com.leituraexpresso.challenge.mscustomer.services;
 
 import com.leituraexpresso.challenge.mscustomer.dto.requests.CustomerRequestDTO;
+import com.leituraexpresso.challenge.mscustomer.dto.response.CustomerResponseDTO;
 import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.*;
 import com.leituraexpresso.challenge.mscustomer.repositories.CustomerRepository;
 import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerMapper;
@@ -28,19 +29,21 @@ public class CustomerService {
     private final CustomerDTOMapper customersDTOMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public CustomerDTO createCustomer(CustomerRequestDTO customerDTO) {
-        checkEmail(customerDTO.email());
-        checkCPF(customerDTO.cpf());
+    public CustomerResponseDTO createCustomer(CustomerRequestDTO customerRequestDTO) {
+        checkEmail(customerRequestDTO.email());
+        checkCPF(customerRequestDTO.cpf());
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(customerDTO.password());
-
-        var customer1 = new CustomerDTO(customerDTO, encryptedPassword);
-
-        return new CustomerDTO(saveCustomer(customer1));
+        return new CustomerResponseDTO(
+            saveCustomer(customerRequestDTO,encryptedPassword(customerRequestDTO.password()))
+        );
     }
 
-    private Customer saveCustomer(CustomerDTO customerDTO){
-        return customerRepository.save(new Customer(customerDTO));
+    private String encryptedPassword(String newPassword){
+        return new BCryptPasswordEncoder().encode(newPassword);
+    }
+
+    private Customer saveCustomer(CustomerRequestDTO customerDTO, String password){
+        return customerRepository.save(new Customer(customerDTO, password));
     }
 
     private void checkEmail(String email){
