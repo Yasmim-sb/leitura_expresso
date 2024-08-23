@@ -1,5 +1,6 @@
 package com.leituraexpresso.challenge.mscustomer.dto;
 
+import com.leituraexpresso.challenge.mscustomer.dto.requests.CustomerRequestDTO;
 import com.leituraexpresso.challenge.mscustomer.dto.response.AddressResponse;
 import com.leituraexpresso.challenge.mscustomer.entities.Customer;
 import com.leituraexpresso.challenge.mscustomer.enums.CustomerRole;

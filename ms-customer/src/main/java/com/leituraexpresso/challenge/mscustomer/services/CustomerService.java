@@ -1,24 +1,19 @@
 package com.leituraexpresso.challenge.mscustomer.services;
 
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.ConflictException;
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.CustomerNotFoundException;
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedToChangePasswordFromOtherCustomerException;
+import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
+import com.leituraexpresso.challenge.mscustomer.dto.requests.CustomerRequestDTO;
+import com.leituraexpresso.challenge.mscustomer.dto.response.CustomerResponseDTO;
+import com.leituraexpresso.challenge.mscustomer.entities.Customer;
+import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.*;
 import com.leituraexpresso.challenge.mscustomer.repositories.CustomerRepository;
 import com.leituraexpresso.challenge.mscustomer.request.CustomerNewPasswordRequest;
-import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerMapper;
-import com.leituraexpresso.challenge.mscustomer.dto.CustomerDTO;
-import com.leituraexpresso.challenge.mscustomer.entities.Customer;
-import com.leituraexpresso.challenge.mscustomer.exceptions.customExceptions.NotAllowedException;
 import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerDTOMapper;
+import com.leituraexpresso.challenge.mscustomer.services.mapping.CustomerMapper;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,35 +26,31 @@ public class CustomerService {
     private final PasswordEncoder passwordEncoder;
     private final CustomerDTOMapper customerDTOMapper;
 
-    public ResponseEntity<CustomerDTO> createCustomer(CustomerDTO customerDTO) throws BadRequestException, ConflictException {
-        if (customerDTO.getFirstName().isEmpty() ||
-                customerDTO.getLastName().isEmpty() ||
-                customerDTO.getSex() == null ||
-                customerDTO.getCpf().isEmpty() ||
-                customerDTO.getBirthdate() == null ||
-                customerDTO.getEmail().isEmpty() ||
-                customerDTO.getPassword().isEmpty()) {
-            throw new BadRequestException("Um ou mais campos obrigatórios estão vazios ou nulos.");
-        }
+    public CustomerResponseDTO createCustomer(CustomerRequestDTO customerRequestDTO) {
+        checkEmail(customerRequestDTO.email());
+        checkCPF(customerRequestDTO.cpf());
 
-        Optional<Customer> existingCustomerByEmail = customerRepository.findByEmail(customerDTO.getEmail());
-        if (existingCustomerByEmail.isPresent()) {
-            throw new ConflictException("Email já em uso.");
-        }
+        return new CustomerResponseDTO(
+            saveCustomer(customerRequestDTO,encryptedPassword(customerRequestDTO.password()))
+        );
+    }
 
-        Optional<Customer> existingCustomerByCpf = customerRepository.findByCpf(customerDTO.getCpf());
-        if (existingCustomerByCpf.isPresent()) {
-            throw new ConflictException("CPF já em uso.");
-        }
+    private Customer saveCustomer(CustomerRequestDTO customerDTO, String password){
+        return customerRepository.save(new Customer(customerDTO, password));
+    }
 
-        String encryptedPassword = passwordEncoder.encode(customerDTO.getPassword());
-        customerDTO.setPassword(encryptedPassword);
+    private void checkEmail(String email){
+        if (customerRepository.findByEmail(email).isPresent())
+            throw new EmailAddressAlreadyExistsException();
+    }
 
-        var customer = customerMapper.createCustomer(customerDTO);
-        customerRepository.save(customer);
+    private void checkCPF(String cpf){
+        if (customerRepository.findByCpf(cpf).isPresent())
+            throw new CPFAlreadyInUseException();
+    }
 
-        var response = customersDTOMapper.createCustomerDTO(customer);
-        return ResponseEntity.ok(response);
+    private String encryptedPassword(String newPassword){
+        return new BCryptPasswordEncoder().encode(newPassword);
     }
 
     public CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO) {

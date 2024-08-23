@@ -56,6 +56,20 @@ public class GlobalExceptionsHandler {
         return ResponseEntity.status(notAllowed.getHttpStatus()).body(problem);
     }
 
+    @ExceptionHandler(EmailAddressAlreadyExistsException.class)
+    public ResponseEntity<Object> handlerEmailAddressAlreadyExistsException(){
+        StandardCustomException EmailExists = new EmailAddressAlreadyExistsException();
+        var problem = new Problem(EmailExists.getMessageErrorCode(), EmailExists.getHttpStatus());
+        return ResponseEntity.status(EmailExists.getHttpStatus()).body(problem);
+    }
+
+    @ExceptionHandler(CPFAlreadyInUseException.class)
+    public ResponseEntity<Object> handlerCPFAlreadyInUseException(){
+        StandardCustomException CPFExists = new CPFAlreadyInUseException();
+        var problem = new Problem(CPFExists.getMessageErrorCode(), CPFExists.getHttpStatus());
+        return ResponseEntity.status(CPFExists.getHttpStatus()).body(problem);
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handlerConstraintViolationException(ConstraintViolationException ex) {
         var problem = new Problem(ex);
