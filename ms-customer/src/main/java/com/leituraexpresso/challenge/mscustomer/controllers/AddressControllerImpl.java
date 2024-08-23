@@ -44,5 +44,4 @@ public class AddressControllerImpl implements AddressController {
         addressService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

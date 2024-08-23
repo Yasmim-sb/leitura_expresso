@@ -154,6 +154,18 @@ public class AddressConstants {
     .customerId(CUSTOMER01_IN_DB)
     .build();
 
+    public static Address ADDRESS02 = Address.builder()
+    .id(1L)
+    .state(ADDRESS_BY_CEP01.getUf().getNome())
+    .city(ADDRESS_BY_CEP01.getLocalidade())
+    .district(ADDRESS01_REQUEST_CORRECT_FIELDS.getDistrict())
+    .street(ADDRESS01_REQUEST_CORRECT_FIELDS.getStreet())
+    .number(ADDRESS01_REQUEST_CORRECT_FIELDS.getNumber())
+    .cep(ADDRESS01_REQUEST_CORRECT_FIELDS.getCep())
+    .complement(ADDRESS01_REQUEST_CORRECT_FIELDS.getComplement())
+    .customerId(CUSTOMER01_IN_DB)
+    .build();
+
     public static Address ADDRESS01_TO_UPDATE = Address.builder()
     .id(ADDRESS01.getId())
     .state(ADDRESS_BY_CEP02.getUf().getNome())
@@ -200,7 +212,7 @@ public class AddressConstants {
     .number(ADDRESS01_REQUEST_CORRECT_FIELDS.getNumber())
     .cep(ADDRESS01_REQUEST_CORRECT_FIELDS.getCep())
     .complement(ADDRESS01_REQUEST_CORRECT_FIELDS.getComplement())
-    .customerId(CUSTOMER01_IN_DB)
+    .customerId(CUSTOMER01_IN_DB.getId())
     .build();
 
     public static AddressDTO ADDRESS02_DTO = AddressDTO.builder()
@@ -212,7 +224,7 @@ public class AddressConstants {
     .number(ADDRESS02_REQUEST_CORRECT_FIELDS.getNumber())
     .cep(ADDRESS02_REQUEST_CORRECT_FIELDS.getCep())
     .complement(ADDRESS02_REQUEST_CORRECT_FIELDS.getComplement())
-    .customerId(CUSTOMER02_IN_DB)
+    .customerId(CUSTOMER01_IN_DB.getId())
     .build();
 
 }

@@ -26,7 +26,7 @@ public class AddressDTO {
 
     private String complement;
 
-    private Customer customerId;
+    private Long customerId;
 
     public AddressDTO(Address address) {
         this.id = address.getId();
@@ -37,6 +37,7 @@ public class AddressDTO {
         this.number = address.getNumber();
         this.cep = address.getCep();
         this.complement = address.getComplement();
+        this.customerId = address.getCustomerId().getId();
     }
 
 

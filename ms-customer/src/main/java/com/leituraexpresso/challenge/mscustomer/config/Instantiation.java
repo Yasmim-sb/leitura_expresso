@@ -8,13 +8,14 @@ import com.leituraexpresso.challenge.mscustomer.enums.SexEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
-public class InstantiationAddress implements CommandLineRunner {
+public class Instantiation implements CommandLineRunner {
     private final AddressRepository addressRepository;
 
     private final CustomerRepository customerRepository;
@@ -24,6 +25,7 @@ public class InstantiationAddress implements CommandLineRunner {
         addressRepository.deleteAll();
         customerRepository.deleteAll();
 
+        String password1 = new BCryptPasswordEncoder().encode("123264654");
         Customer customer1 = Customer.builder()
         .firstName("Raimundo")
         .lastName("Silva")
@@ -31,11 +33,12 @@ public class InstantiationAddress implements CommandLineRunner {
         .cpf("444.666.888-95")
         .birthdate(LocalDate.of(1998, 10, 11 ))
         .email("r@mail.com")
-        .password("123264654")
+        .password(password1)
         .active(true)
         .build();
 
 
+        String password2 = new BCryptPasswordEncoder().encode("123264654");
         Customer customer2 = Customer.builder()
         .firstName("Rita")
         .lastName("Gonçalves")
@@ -43,7 +46,7 @@ public class InstantiationAddress implements CommandLineRunner {
         .cpf("454.667.884-91")
         .birthdate(LocalDate.of(1991, 9, 8 ))
         .email("rita@mail.com")
-        .password("12311264654")
+        .password(password2)
         .active(true)
         .build();
 

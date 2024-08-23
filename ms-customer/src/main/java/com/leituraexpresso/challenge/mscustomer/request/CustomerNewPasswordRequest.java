@@ -13,4 +13,9 @@ public class CustomerNewPasswordRequest {
     @Size(min = 6, message = "Password need at last 6 characters")
     @NotBlank (message = "Password don't be blank")
     private String newPassword;
+
+    @Override
+    public String toString(){
+        return newPassword;
+    }
 }
